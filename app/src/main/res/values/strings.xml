@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PoolTool</string>
+    <string name="player_name">Name</string>
+    <string name="potted">Potted</string>
+    <string name="missed">Missed</string>
+    <string name="rate">Rate</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset_score">Reset the score for all players?</string>
+</resources>
