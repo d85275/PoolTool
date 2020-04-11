@@ -38,6 +38,13 @@ class MyViewModel : ViewModel() {
         mldPlayers.postValue(list)
     }
 
+
+    fun renamePlayer(name: String, i: Int) {
+        val list = mldPlayers.value!!
+        list[i].name = name
+        mldPlayers.postValue(list)
+    }
+
     // rename player i
     fun playerRename(i: Int) {
         val list = mldPlayers.value!!

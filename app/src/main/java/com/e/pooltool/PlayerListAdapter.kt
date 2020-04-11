@@ -1,11 +1,15 @@
 package com.e.pooltool
 
+import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
+import android.view.WindowManager
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.marginStart
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_player.view.*
 
@@ -27,16 +31,27 @@ class PlayerListAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        initViews(holder, position)
+        setClickListeners(holder, position)
+        setLongClickListeners(holder, position)
+    }
+
+    private fun initViews(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = playerList[position].name
         holder.itemView.tvPotted.text = playerList[position].potted.toString()
         holder.itemView.tvMissed.text = playerList[position].missed.toString()
         holder.itemView.tvRate.text = playerList[position].getRate()
 
         holder.itemView.tvRate.setTextColor(viewModel.getRateTextColor(playerList[position].getRate()))
+    }
 
-        holder.itemView.tvName.setOnClickListener { viewModel.playerRename(position) }
+    private fun setClickListeners(holder: RecyclerView.ViewHolder, position: Int) {
+        holder.itemView.tvName.setOnClickListener { renameDialog(position) }
         holder.itemView.tvPotted.setOnClickListener { viewModel.playerPotted(position) }
         holder.itemView.tvMissed.setOnClickListener { viewModel.playerMissed(position) }
+    }
+
+    private fun setLongClickListeners(holder: RecyclerView.ViewHolder, position: Int) {
 
         holder.itemView.tvPotted.setOnLongClickListener {
             viewModel.undoPlayerPotted(position)
@@ -44,24 +59,33 @@ class PlayerListAdapter(
             // return true.  Don't trigger the on click event when on long clicked is triggered
             true
         }
+
         holder.itemView.tvMissed.setOnLongClickListener {
             viewModel.undoPlayerMissed(position)
 
             // return true.  Don't trigger the on click event when on long clicked is triggered
             true
         }
+    }
 
-        /*val myCustomFont: Typeface? = ResourcesCompat.getFont(ctx, R.font.playtime)
-        holder.itemView.tvName.typeface = myCustomFont
-        holder.itemView.tvPotted.typeface = myCustomFont
-        holder.itemView.tvMissed.typeface = myCustomFont
-        holder.itemView.tvRate.typeface = myCustomFont*/
+    private fun renameDialog(position: Int) {
+        val dialogBuilder = AlertDialog.Builder(ctx)
+        dialogBuilder.setMessage("")
 
-        /**
-         * Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-         * Icons made by <a href="https://www.flaticon.com/authors/smalllikeart" title="smalllikeart">smalllikeart</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-         * Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-         * Icons made by <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-         */
+        val editText = EditText(ctx)
+        editText.setText(playerList[position].name)
+        editText.requestFocus()
+        editText.selectAll()
+        dialogBuilder.setView(editText)
+
+        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.renamePlayer(editText.text.toString(),position)}
+        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
+
+        val dialog = dialogBuilder.create()
+        dialog.setView(editText, 40, 0, 40, 0)
+        dialog.show()
+
+        // show keyboard
+        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 }
