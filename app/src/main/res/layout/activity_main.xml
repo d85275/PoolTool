@@ -16,22 +16,22 @@
 
         <ImageButton
             android:id="@+id/btSave"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/save" />
 
         <ImageButton
             android:id="@+id/btReset"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/refresh" />
 
         <ImageButton
             android:id="@+id/btAdd"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/friend"
             android:padding="4dp" />
