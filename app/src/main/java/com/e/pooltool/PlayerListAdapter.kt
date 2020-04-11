@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.core.view.marginStart
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_player.view.*
 
@@ -70,7 +67,6 @@ class PlayerListAdapter(
 
     private fun renameDialog(position: Int) {
         val dialogBuilder = AlertDialog.Builder(ctx)
-        dialogBuilder.setMessage("")
 
         val editText = EditText(ctx)
         editText.setText(playerList[position].name)
@@ -82,7 +78,7 @@ class PlayerListAdapter(
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
 
         val dialog = dialogBuilder.create()
-        dialog.setView(editText, 40, 0, 40, 0)
+        dialog.setView(editText, 40, 100, 40, 0)
         dialog.show()
 
         // show keyboard

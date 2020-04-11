@@ -1,9 +1,13 @@
 package com.e.pooltool
 
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.view.MotionEvent
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MyViewModel : ViewModel() {
@@ -108,4 +112,34 @@ class MyViewModel : ViewModel() {
         )
         return color
     }
+
+    fun setButtonClickedEffect(button: View) {
+        button.setOnTouchListener { v, event ->
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.background.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
+                    v.invalidate()
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                }
+            }
+
+            false
+        }
+    }
+
+    // the number of the players
+    // if there is no player, don't show the reset button
+    fun setResetButtonVisibility(size: Int, btReset: View) {
+        if (size > 0 && btReset.visibility == View.INVISIBLE) {
+            btReset.visibility = View.VISIBLE
+        } else if (size <= 0) {
+            btReset.visibility = View.INVISIBLE
+        }
+    }
+
 }

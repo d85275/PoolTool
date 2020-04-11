@@ -1,15 +1,8 @@
 package com.e.pooltool
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.pm.ActivityInfo
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -29,10 +22,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         requestedOrientation = (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_main)
-        setListeners()
         getViewModel()
-        setButtonEffect(btAdd)
-        setButtonEffect(btReset)
+        setListeners()
+        setEffects()
         setAdapter()
         registerLiveData()
     }
@@ -40,9 +32,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setListeners() {
         btAdd.setOnClickListener(this)
         btReset.setOnClickListener(this)
+        btSave.setOnClickListener(this)
         // set swipe action listener
         val itemTouchHelper = ItemTouchHelper(touchCallback)
         itemTouchHelper.attachToRecyclerView(rvPlayers)
+    }
+
+    private fun setEffects() {
+        viewModel.setButtonClickedEffect(btAdd)
+        viewModel.setButtonClickedEffect(btReset)
+        viewModel.setButtonClickedEffect(btSave)
     }
 
     private fun getViewModel() {
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.getPlayerList()
             .observe(this, Observer { list ->
                 playerListAdapter.notifyDataSetChanged()
-                setResetButtonVisibility(list.size)
+                viewModel.setResetButtonVisibility(list.size, btReset)
             })
     }
 
@@ -70,34 +69,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    // the number of the players
-    // if there is no player, don't show the reset button
-    private fun setResetButtonVisibility(size: Int) {
-        if (size > 0 && btReset.visibility == View.INVISIBLE) {
-            btReset.visibility = View.VISIBLE
-        } else if (size <= 0) {
-            btReset.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun setButtonEffect(button: View) {
-        button.setOnTouchListener { v, event ->
-
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    v.background.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
-                    v.invalidate()
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    v.background.clearColorFilter()
-                    v.invalidate()
-                }
-            }
-
-            false
-        }
-    }
 
     private fun resetConfirmDialogue() {
         val dialogBuilder = AlertDialog.Builder(this)
