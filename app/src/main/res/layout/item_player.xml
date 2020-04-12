@@ -3,36 +3,47 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="15dp"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5" />
+        android:layout_weight="1.5"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/tvPotted"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_weight="1"
-        android:gravity="end" />
+        android:gravity="end"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/tvMissed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_weight="1"
-        android:gravity="end"/>
+        android:gravity="end"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
 
     <TextView
         android:id="@+id/tvRate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_weight="1"
         android:gravity="end"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:textStyle="bold" />
 
 </LinearLayout>
