@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btSave.setOnClickListener(this)
         btPlayerRecords.setOnClickListener(this)
         // set swipe action listener
-        val itemTouchHelper = ItemTouchHelper(getSwpieToDeleteCallback())
+        val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
         itemTouchHelper.attachToRecyclerView(rvPlayers)
     }
 
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         dialogBuilder.show()
     }
 
-    private fun getSwpieToDeleteCallback(): SwipeToDeleteCallback {
+    private fun getSwipeToDeleteCallback(): SwipeToDeleteCallback {
         return object : SwipeToDeleteCallback(this) {
             override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
                 viewModel.removePlayer(viewHolder.adapterPosition)
