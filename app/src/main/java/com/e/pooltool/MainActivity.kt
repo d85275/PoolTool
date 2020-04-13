@@ -1,6 +1,7 @@
 package com.e.pooltool
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
@@ -9,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,8 +33,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btAdd.setOnClickListener(this)
         btReset.setOnClickListener(this)
         btSave.setOnClickListener(this)
+        btPlayerRecords.setOnClickListener(this)
         // set swipe action listener
-        val itemTouchHelper = ItemTouchHelper(touchCallback)
+        val itemTouchHelper = ItemTouchHelper(getSwpieToDeleteCallback())
         itemTouchHelper.attachToRecyclerView(rvPlayers)
     }
 
@@ -66,6 +67,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.btAdd -> viewModel.addPlayer()
             R.id.btReset -> resetConfirmDialogue()
+            R.id.btSave -> {
+            }
+            R.id.btPlayerRecords -> {
+                val intent = Intent()
+                intent.setClass(this, PlayerRecordsActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -78,18 +86,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         dialogBuilder.show()
     }
 
-    private var touchCallback: ItemTouchHelper.SimpleCallback =
-        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: ViewHolder,
-                target: ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: ViewHolder, swipeDir: Int) {
+    private fun getSwpieToDeleteCallback(): SwipeToDeleteCallback {
+        return object : SwipeToDeleteCallback(this) {
+            override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
                 viewModel.removePlayer(viewHolder.adapterPosition)
             }
+
         }
+    }
 }
