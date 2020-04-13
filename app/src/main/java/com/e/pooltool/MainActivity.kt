@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setListeners() {
         btAdd.setOnClickListener(this)
         btReset.setOnClickListener(this)
-        btSave.setOnClickListener(this)
         btPlayerRecords.setOnClickListener(this)
         // set swipe action listener
         val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
@@ -42,7 +41,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setEffects() {
         viewModel.setButtonClickedEffect(btAdd)
         viewModel.setButtonClickedEffect(btReset)
-        viewModel.setButtonClickedEffect(btSave)
     }
 
     private fun getViewModel() {
@@ -72,8 +70,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.btAdd -> viewModel.addPlayer()
             R.id.btReset -> resetConfirmDialogue()
-            R.id.btSave -> {
-            }
             R.id.btPlayerRecords -> {
                 val intent = Intent()
                 intent.setClass(this, PlayerRecordsActivity::class.java)
