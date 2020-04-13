@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_player.view.*
+import kotlinx.android.synthetic.main.player_name.view.*
 
 
 class PlayerListAdapter(
@@ -68,20 +69,28 @@ class PlayerListAdapter(
     private fun renameDialog(position: Int) {
         val dialogBuilder = AlertDialog.Builder(ctx)
 
-        val editText = EditText(ctx)
-        editText.setText(playerList[position].name)
-        editText.requestFocus()
-        editText.selectAll()
-        dialogBuilder.setView(editText)
+        val view = LayoutInflater.from(ctx).inflate(R.layout.player_name, null)
 
-        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.renamePlayer(editText.text.toString(),position)}
+        // init views
+        view.etName.setText(playerList[position].name)
+        view.etName.requestFocus()
+        view.etName.selectAll()
+
+        // set get random name button
+        viewModel.setButtonClickedEffect(view.btRandom)
+        view.btRandom.setOnClickListener { view.etName.setText(PlayerNames().getName()) }
+
+        // set dialog buttons
+        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->
+            viewModel.renamePlayer(view.etName.text.toString(), position)
+        }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
 
         val dialog = dialogBuilder.create()
-        dialog.setView(editText, 40, 100, 40, 0)
+        dialog.setView(view, 40, 100, 40, 0)
         dialog.show()
 
         // show keyboard
-        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 }
