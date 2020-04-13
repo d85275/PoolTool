@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
@@ -90,12 +91,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         dialogBuilder.show()
     }
 
-    private fun getSwipeToDeleteCallback(): SwipeToDeleteCallback {
-        return object : SwipeToDeleteCallback(this) {
+    private fun getSwipeToDeleteCallback(): PlayerSwipeCallback {
+        return object : PlayerSwipeCallback(this) {
             override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+                if(direction == ItemTouchHelper.LEFT){
+                    Log.e("a","delete")
+                }else if (direction == ItemTouchHelper.RIGHT){
+                    Log.e("a","save")
+                }
                 viewModel.removePlayer(viewHolder.adapterPosition)
             }
-
         }
     }
 }
