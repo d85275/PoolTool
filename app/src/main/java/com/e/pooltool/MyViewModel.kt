@@ -4,80 +4,89 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.MotionEvent
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
 
-class MyViewModel : ViewModel() {
-    private val mldPlayers: MutableLiveData<ArrayList<Player>> = MutableLiveData()
+class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+
+    // Keep the key as a constant
+    companion object {
+        private const val PLAYER_KEY = "PLAYER_KEY"
+    }
+
+    private var _players: MutableLiveData<ArrayList<Player>> = MutableLiveData()
+
+    private fun getPlayerState(): MutableLiveData<ArrayList<Player>> {
+        return savedStateHandle.getLiveData(PLAYER_KEY)
+    }
 
     fun getPlayerList(): LiveData<ArrayList<Player>> {
-        if (mldPlayers.value == null) {
-            mldPlayers.value = arrayListOf()
+        _players = getPlayerState()
+        if (_players.value == null) {
+            _players.value = arrayListOf()
         }
-        return mldPlayers
+        return _players
     }
 
     fun addPlayer() {
         val player = Player(PlayerNames().getName())
-        val list = mldPlayers.value
+        val list = _players.value
         list?.add(player)
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     fun removePlayer(idx: Int) {
-        val list = mldPlayers.value
+        val list = _players.value
         list?.removeAt(idx)
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     fun resetScores() {
-        val list = mldPlayers.value!!
+        val list = _players.value!!
         for (i in 0 until list.size) {
             list[i].potted = 0
             list[i].missed = 0
         }
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
 
     fun renamePlayer(name: String, i: Int) {
-        val list = mldPlayers.value!!
+        val list = _players.value!!
         list[i].name = name
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     // player i has potted a shot
     fun playerPotted(i: Int) {
-        val list = mldPlayers.value!!
+        val list = _players.value!!
         list[i].potted = list[i].potted + 1
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     fun undoPlayerPotted(i: Int) {
-        val list = mldPlayers.value!!
+        val list = _players.value!!
         if (list[i].potted <= 0) {
             return
         }
         list[i].potted = list[i].potted - 1
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     // player i has missed a shot
     fun playerMissed(i: Int) {
-        val list = mldPlayers.value!!
+        val list = _players.value!!
         list[i].missed = list[i].missed + 1
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     fun undoPlayerMissed(i: Int) {
-        val list = mldPlayers.value!!
+        val list = _players.value!!
         if (list[i].missed <= 0) {
             return
         }
         list[i].missed = list[i].missed - 1
-        mldPlayers.postValue(list)
+        _players.postValue(list)
     }
 
     fun getRateTextColor(rate: String): Int {

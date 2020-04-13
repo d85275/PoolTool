@@ -1,9 +1,12 @@
 package com.e.pooltool
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-data class Player(var name: String, var potted: Int = 0, var missed: Int = 0) {
+@Parcelize
+data class Player(var name: String, var potted: Int = 0, var missed: Int = 0) : Parcelable {
 
     fun getRate(): String {
         if (potted + missed == 0) {

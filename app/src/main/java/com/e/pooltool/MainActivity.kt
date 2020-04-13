@@ -6,8 +6,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -46,7 +45,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getViewModel() {
-        viewModel = this.run { ViewModelProviders.of(this)[MyViewModel::class.java] }
+        viewModel = this.run {
+            ViewModelProviders.of(
+                this,
+                SavedStateViewModelFactory(application, this)
+            )[MyViewModel::class.java]
+        }
     }
 
     private fun setAdapter() {
