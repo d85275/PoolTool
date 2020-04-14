@@ -20,12 +20,16 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         return savedStateHandle.getLiveData(PLAYER_KEY)
     }
 
-    fun getPlayerList(): LiveData<ArrayList<Player>> {
+    fun getPlayerListLiveData(): LiveData<ArrayList<Player>> {
         _players = getPlayerState()
         if (_players.value == null) {
             _players.value = arrayListOf()
         }
         return _players
+    }
+
+    fun getPlayerList(): ArrayList<Player> {
+        return getPlayerListLiveData().value!!
     }
 
     fun addPlayer() {

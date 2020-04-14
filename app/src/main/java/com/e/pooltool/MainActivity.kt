@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
@@ -53,13 +52,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setAdapter() {
-        playerListAdapter = PlayerListAdapter(viewModel, viewModel.getPlayerList().value!!, this)
+        playerListAdapter = PlayerListAdapter(viewModel, viewModel.getPlayerList(), this)
         rvPlayers.adapter = playerListAdapter
         rvPlayers.layoutManager = LinearLayoutManager(this)
     }
 
     private fun registerLiveData() {
-        viewModel.getPlayerList()
+        viewModel.getPlayerListLiveData()
             .observe(this, Observer { list ->
                 playerListAdapter.notifyDataSetChanged()
                 viewModel.setResetButtonVisibility(list.size, btReset)
@@ -90,7 +89,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun deleteConfirmDialogue(position: Int) {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle(viewModel.getPlayerList().value!![position].name)
+        dialogBuilder.setTitle(viewModel.getPlayerListLiveData().value!![position].name)
         dialogBuilder.setMessage(getString(R.string.delete))
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
@@ -99,7 +98,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun saveConfirmDialogue(position: Int) {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle(viewModel.getPlayerList().value!![position].name)
+        dialogBuilder.setTitle(viewModel.getPlayerList()[position].name)
         dialogBuilder.setMessage(getString(R.string.save))
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
