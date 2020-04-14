@@ -7,4 +7,7 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="reset_score">Reset the score for all players?</string>
+    <string name="info">Info</string>
+    <string name="delete">Delete the data for this player?</string>
+    <string name="save">Save the data for this player?</string>
 </resources>

@@ -81,21 +81,41 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun resetConfirmDialogue() {
         val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle(getString(R.string.info))
         dialogBuilder.setMessage(R.string.reset_score)
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.resetScores() }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
         dialogBuilder.show()
     }
 
+    private fun deleteConfirmDialogue(position: Int) {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle(viewModel.getPlayerList().value!![position].name)
+        dialogBuilder.setMessage(getString(R.string.delete))
+        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
+        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
+        dialogBuilder.show()
+    }
+
+    private fun saveConfirmDialogue(position: Int) {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle(viewModel.getPlayerList().value!![position].name)
+        dialogBuilder.setMessage(getString(R.string.save))
+        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
+        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
+        dialogBuilder.show()
+    }
+
     private fun getSwipeToDeleteCallback(): PlayerSwipeCallback {
         return object : PlayerSwipeCallback(this) {
             override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-                if(direction == ItemTouchHelper.LEFT){
-                    Log.e("a","delete")
-                }else if (direction == ItemTouchHelper.RIGHT){
-                    Log.e("a","save")
+                val position = viewHolder.adapterPosition
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    deleteConfirmDialogue(position)
+                } else if (direction == ItemTouchHelper.RIGHT) {
+                    saveConfirmDialogue(position)
                 }
-                viewModel.removePlayer(viewHolder.adapterPosition)
             }
         }
     }
