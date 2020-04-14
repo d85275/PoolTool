@@ -4,9 +4,7 @@ An android app which can help the user to practice pool
 Kotlin, ViewModel, RecyclerView
 
 Using the following libs:
-• <a href="https://github.com/PhilJay/MPAndroidChart#documentation" title="MPAndroidChart"> 
-
-
+• MPAndroidChart <a href="https://github.com/PhilJay/MPAndroidChart#documentation" title="MPAndroidChart"> 
 
 Icons:
 
