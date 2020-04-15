@@ -2,9 +2,20 @@ package com.e.pooltool
 
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.*
+import com.e.pooltool.database.PlayerRecordItem
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -13,6 +24,8 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     companion object {
         private const val PLAYER_KEY = "PLAYER_KEY"
     }
+
+    private lateinit var repository: Repository
 
     private var _players: MutableLiveData<ArrayList<Player>> = MutableLiveData()
 
@@ -37,6 +50,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         val list = _players.value
         list?.add(player)
         _players.postValue(list)
+
     }
 
     fun removePlayer(idx: Int) {
@@ -44,6 +58,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         list?.removeAt(idx)
         _players.postValue(list)
     }
+
 
     fun resetScores() {
         val list = _players.value!!
@@ -147,4 +162,76 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         }
     }
 
+    // line chart --
+    fun getLabelCount(): Int {
+        if (getSavedRecordsList().size <= 0) {
+            return 0
+        }
+        return getSavedRecordsList().size - 1
+    }
+    // line chart --
+
+    // database --
+
+    fun setRepository(repository: Repository) {
+        this.repository = repository
+    }
+
+    // using the current date and time as the primary key for the database entry
+    fun saveRecord(idx: Int) {
+        val saved = getPlayerList()[idx]
+        val current = LocalDateTime.now()
+
+        // h - Hour in am/pm (1-12)
+        //using two h's ("hh") gives you a leading zero (i.e. 01:23 AM). One "h" gives you the hour without the leading zero (1:23 AM)
+        // H - Hour in 24 hours format
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")
+        var date = current.format(formatter)
+
+        saveRecord(saved, date)
+
+        removePlayer(idx)
+    }
+
+    private fun saveRecord(player: Player, date: String) {
+        val record = PlayerRecordItem(
+            0,
+            player.name, player.potted, player.missed,
+            player.getRate(), date
+        )
+        Log.e("te", "id: ${record.id}")
+
+        //Thread(Runnable { repository.addRecord(record) }).start()
+        // save the data into db in background
+        Single.fromCallable { repository.addRecord(record) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+    }
+
+    private val _savedRecord = MutableLiveData<ArrayList<PlayerRecordItem>>()
+
+    fun getSavedRecordLiveDate(): LiveData<ArrayList<PlayerRecordItem>> {
+        return _savedRecord
+    }
+
+    fun getSavedRecordsList(): ArrayList<PlayerRecordItem> {
+        if (_savedRecord.value == null) {
+            _savedRecord.value = arrayListOf()
+        }
+        return _savedRecord.value!!
+    }
+
+    fun getSavedRecords(name: String) {
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(
+            repository.getRecords(name).subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
+                .subscribe { list ->
+                    _savedRecord.postValue(list as ArrayList<PlayerRecordItem>?)
+                }
+        )
+    }
+    // database --
 }

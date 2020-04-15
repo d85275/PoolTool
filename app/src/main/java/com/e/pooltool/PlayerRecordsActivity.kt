@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,10 +25,11 @@ class PlayerRecordsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.player_records)
-        setupLineChartData()
         getViewModel()
+        setRepository()
+        registerLiveData()
+        //initData()
         setAdapter()
-        initData()
     }
 
     private fun getViewModel() {
@@ -40,31 +42,27 @@ class PlayerRecordsActivity : AppCompatActivity() {
     }
 
     private fun setAdapter() {
-        playerRecordAdapter = PlayerRecordAdapter(viewModel, getList(), this)
+        playerRecordAdapter = PlayerRecordAdapter(viewModel, viewModel.getSavedRecordsList(), this)
         rvRecords.adapter = playerRecordAdapter
         rvRecords.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun getList(): ArrayList<PlayerRecord> {
-        val list: ArrayList<PlayerRecord> = arrayListOf()
-        list.add(PlayerRecord("Test", 8, 14, "Apr 14, 9:36 AM"))
-        list.add(PlayerRecord("Test", 7, 11, "Apr 13, 10:26 AM"))
-        list.add(PlayerRecord("Test", 8, 17, "Apr 9, 9:02 PM"))
-        list.add(PlayerRecord("Test", 8, 6, "Apr 5, 6:16 pM"))
-        list.add(PlayerRecord("Test", 8, 9, "Apr 4, 8:20 PM"))
-        list.add(PlayerRecord("Test", 8, 14, "Apr 1, 5:44 PM"))
-        list.add(PlayerRecord("Test", 8, 16, "Mar 31, 03:54 PM"))
-        list.add(PlayerRecord("Test", 8, 13, "Mar 29, 10:21 AM"))
-        list.add(PlayerRecord("Test", 8, 13, "Mar 28, 7:55 AM"))
-        return list
+    private fun registerLiveData() {
+        viewModel.getSavedRecordLiveDate().observe(this, Observer {
+            initData()
+            setupLineChartData()
+            playerRecordAdapter.notifyDataSetChanged()
+        })
+        viewModel.getSavedRecords("Chao")
     }
 
     private fun initData() {
+        Log.e("123", "init user data")
         // set player name
-        val name = PlayerNames().getName()
+        val name = "Chao"
 
 
-        val list = getList()
+        val list = viewModel.getSavedRecordsList()
         var potted: Int = 0
         var missed: Int = 0
 
@@ -81,17 +79,33 @@ class PlayerRecordsActivity : AppCompatActivity() {
         tvAve.text = player.getRate().replace("%", "")
     }
 
+    private fun setRepository() {
+        viewModel.setRepository(Repository(this))
+    }
+
+    private fun showList() {
+        val list = viewModel.getSavedRecordsList()
+        for (i in list.indices) {
+            Log.e("date", "data $i: ${list[i].name}")
+            Log.e("date", "data $i: ${list[i].potted}")
+            Log.e("date", "data $i: ${list[i].missed}")
+            Log.e("date", "data $i: ${list[i].rate}")
+            Log.e("date", "data $i: ${list[i].date}")
+            Log.e("date", "data $i: ${list[i].id}")
+        }
+    }
+
     private fun getCharData(): ArrayList<Entry> {
         val data = ArrayList<Entry>()
-        val list = getList()
+        val list = viewModel.getSavedRecordsList()
+        Log.e("t","list size: ${list.size}")
         for (i in list.indices) {
-            val rate = list[i].getRate().replace("%","").trim().toFloat()
-            val entry = Entry(i.toFloat(),rate)
+            val rate = list[i].rate.replace("%", "").trim().toFloat()
+            val entry = Entry(i.toFloat(), rate)
             data.add(entry)
         }
         return data
     }
-
 
 
     private fun setupLineChartData() {
@@ -118,7 +132,8 @@ class PlayerRecordsActivity : AppCompatActivity() {
         dataSets.add(set1)
         val data = LineData(dataSets)
 
-        // set data
+        // clear the previous data before setting a new set of data
+        lineChart.clear()
         lineChart.data = data
         lineChart.description.isEnabled = false
         lineChart.legend.isEnabled = false
@@ -127,7 +142,7 @@ class PlayerRecordsActivity : AppCompatActivity() {
         lineChart.axisRight.enableGridDashedLine(5f, 5f, 0f)
         lineChart.axisLeft.enableGridDashedLine(5f, 5f, 0f)
         //lineChart.setDrawGridBackground()
-        lineChart.xAxis.labelCount = getList().size-1
+        lineChart.xAxis.labelCount = viewModel.getLabelCount()
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
     }
 }

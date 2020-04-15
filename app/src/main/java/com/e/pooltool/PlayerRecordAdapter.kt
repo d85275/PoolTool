@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.e.pooltool.database.PlayerRecordItem
 import kotlinx.android.synthetic.main.item_player.view.tvRate
 import kotlinx.android.synthetic.main.item_player_record.view.*
 
 class PlayerRecordAdapter(
     private val viewModel: MyViewModel,
-    private val playerRecord: ArrayList<PlayerRecord>,
+    private val playerRecord: ArrayList<PlayerRecordItem>,
     private val ctx: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,7 +35,7 @@ class PlayerRecordAdapter(
 
         holder.itemView.ivIcon.setImageDrawable(fileIcon)
         holder.itemView.tvRatio.text = ctx.getString(R.string.ratio, potted, missed)
-        holder.itemView.tvRate.text = playerRecord[position].getRate()
+        holder.itemView.tvRate.text = playerRecord[position].rate
         holder.itemView.tvDate.text = playerRecord[position].date
 
 

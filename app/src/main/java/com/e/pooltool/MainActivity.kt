@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setEffects()
         setAdapter()
         registerLiveData()
+        setRepository()
     }
 
     private fun setListeners() {
@@ -49,6 +50,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 SavedStateViewModelFactory(application, this)
             )[MyViewModel::class.java]
         }
+    }
+
+    private fun setRepository(){
+        viewModel.setRepository(Repository(this))
     }
 
     private fun setAdapter() {
@@ -100,7 +105,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle(viewModel.getPlayerList()[position].name)
         dialogBuilder.setMessage(getString(R.string.save))
-        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
+        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->
+            //viewModel.removePlayer(position)
+            viewModel.saveRecord(position)
+        }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
         dialogBuilder.show()
     }
