@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.e.pooltool.database.PlayerRecordItem
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -27,9 +28,9 @@ class PlayerRecordsActivity : AppCompatActivity() {
         setContentView(R.layout.player_records)
         getViewModel()
         setRepository()
-        registerLiveData()
-        //initData()
         setAdapter()
+        registerLiveData()
+        loadRecords("Chao")
     }
 
     private fun getViewModel() {
@@ -51,13 +52,17 @@ class PlayerRecordsActivity : AppCompatActivity() {
         viewModel.getSavedRecordLiveDate().observe(this, Observer {
             initData()
             setupLineChartData()
+            playerRecordAdapter.setData(viewModel.getSavedRecordsList())
             playerRecordAdapter.notifyDataSetChanged()
         })
-        viewModel.getSavedRecords("Chao")
     }
 
+    private fun loadRecords(name: String) {
+        viewModel.getSavedRecords(name)
+    }
+
+
     private fun initData() {
-        Log.e("123", "init user data")
         // set player name
         val name = "Chao"
 
@@ -83,22 +88,10 @@ class PlayerRecordsActivity : AppCompatActivity() {
         viewModel.setRepository(Repository(this))
     }
 
-    private fun showList() {
-        val list = viewModel.getSavedRecordsList()
-        for (i in list.indices) {
-            Log.e("date", "data $i: ${list[i].name}")
-            Log.e("date", "data $i: ${list[i].potted}")
-            Log.e("date", "data $i: ${list[i].missed}")
-            Log.e("date", "data $i: ${list[i].rate}")
-            Log.e("date", "data $i: ${list[i].date}")
-            Log.e("date", "data $i: ${list[i].id}")
-        }
-    }
 
     private fun getCharData(): ArrayList<Entry> {
         val data = ArrayList<Entry>()
         val list = viewModel.getSavedRecordsList()
-        Log.e("t","list size: ${list.size}")
         for (i in list.indices) {
             val rate = list[i].rate.replace("%", "").trim().toFloat()
             val entry = Entry(i.toFloat(), rate)

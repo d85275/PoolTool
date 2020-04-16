@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -28,6 +29,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     private lateinit var repository: Repository
 
     private var _players: MutableLiveData<ArrayList<Player>> = MutableLiveData()
+    private var _savedRecord: MutableLiveData<ArrayList<PlayerRecordItem>> = MutableLiveData()
 
     private fun getPlayerState(): MutableLiveData<ArrayList<Player>> {
         return savedStateHandle.getLiveData(PLAYER_KEY)
@@ -209,17 +211,16 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
             .subscribe()
     }
 
-    private val _savedRecord = MutableLiveData<ArrayList<PlayerRecordItem>>()
 
     fun getSavedRecordLiveDate(): LiveData<ArrayList<PlayerRecordItem>> {
+        if (_savedRecord.value == null) {
+            _savedRecord.value = arrayListOf()
+        }
         return _savedRecord
     }
 
     fun getSavedRecordsList(): ArrayList<PlayerRecordItem> {
-        if (_savedRecord.value == null) {
-            _savedRecord.value = arrayListOf()
-        }
-        return _savedRecord.value!!
+        return getSavedRecordLiveDate().value!!
     }
 
     fun getSavedRecords(name: String) {
@@ -227,7 +228,12 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         compositeDisposable.add(
             repository.getRecords(name).subscribeOn(Schedulers.io()).observeOn(
                 AndroidSchedulers.mainThread()
-            ).doOnError { e -> Log.e("PP", "Error when getting saved records: $e") }
+            ).doOnError { e ->
+                Log.e(
+                    "PP",
+                    "Error when getting saved records: $e"
+                )
+            }
                 .subscribe { list ->
                     _savedRecord.postValue(list as ArrayList<PlayerRecordItem>?)
                 }
