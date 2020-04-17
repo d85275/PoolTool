@@ -1,22 +1,26 @@
 package com.e.pooltool
 
+import android.R.color
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import com.e.pooltool.database.PlayerRecordItem
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 
 class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -45,6 +49,10 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     fun getPlayerList(): ArrayList<Player> {
         return getPlayerListLiveData().value!!
+    }
+
+    fun getPlayerName(idx: Int): String {
+        return getPlayerList()[idx].name
     }
 
     fun addPlayer() {
@@ -140,7 +148,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    v.background.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
+                    setColorFilter(v.background)
                     v.invalidate()
                 }
 
@@ -151,6 +159,14 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
             }
 
             false
+        }
+    }
+
+    private fun setColorFilter(background: Drawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            background.colorFilter = BlendModeColorFilter(Color.WHITE, BlendMode.SRC_ATOP)
+        } else {
+            background.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
         }
     }
 
@@ -239,5 +255,10 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
                 }
         )
     }
+
+    fun getAllSavedPlayers() {
+
+    }
+
     // database --
 }

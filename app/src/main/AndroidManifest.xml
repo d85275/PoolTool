@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PlayerRecordsActivity" />
+        <activity android:name=".SavedPlayerActivity" />
     </application>
 
 </manifest>

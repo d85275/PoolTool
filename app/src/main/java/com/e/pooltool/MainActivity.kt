@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setListeners() {
         btAdd.setOnClickListener(this)
         btReset.setOnClickListener(this)
+        btSavedPlayers.setOnClickListener(this)
         btPlayerRecords.setOnClickListener(this)
         // set swipe action listener
         val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setEffects() {
         viewModel.setButtonClickedEffect(btAdd)
         viewModel.setButtonClickedEffect(btReset)
+        viewModel.setButtonClickedEffect(btSavedPlayers)
     }
 
     private fun getViewModel() {
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setRepository(){
+    private fun setRepository() {
         viewModel.setRepository(Repository(this))
     }
 
@@ -79,6 +81,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 intent.setClass(this, PlayerRecordsActivity::class.java)
                 startActivity(intent)
             }
+            R.id.btSavedPlayers -> {
+
+            }
         }
     }
 
@@ -94,7 +99,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun deleteConfirmDialogue(position: Int) {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle(viewModel.getPlayerListLiveData().value!![position].name)
+        dialogBuilder.setTitle(viewModel.getPlayerName(position))
         dialogBuilder.setMessage(getString(R.string.delete))
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
@@ -103,7 +108,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun saveConfirmDialogue(position: Int) {
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle(viewModel.getPlayerList()[position].name)
+        dialogBuilder.setTitle(viewModel.getPlayerName(position))
         dialogBuilder.setMessage(getString(R.string.save))
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->
             //viewModel.removePlayer(position)
