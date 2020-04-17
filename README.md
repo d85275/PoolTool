@@ -1,7 +1,11 @@
 # PoolTool
 An android app which can help the user to practice pool
 
-Kotlin, ViewModel, RecyclerView, Room, RxJava, MPAndroidChart 
+Kotlin 
+
+Android JetPack: ViewModel, RecyclerView, Room, Navigation 
+
+Other Libraries: RxJava, MPAndroidChart 
 
 Icons:
 

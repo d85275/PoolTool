@@ -1,51 +1,66 @@
-package com.e.pooltool
+package com.e.pooltool.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e.pooltool.database.PlayerRecordItem
-import com.github.mikephil.charting.components.Description
+import com.e.pooltool.MyViewModel
+import com.e.pooltool.Player
+import com.e.pooltool.adapters.PlayerRecordAdapter
+import com.e.pooltool.R
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.player_records.*
+import kotlinx.android.synthetic.main.fragment_player_records.*
+import java.lang.Exception
 
-class PlayerRecordsActivity : AppCompatActivity() {
+class PlayerRecordsFragment : Fragment() {
 
     private lateinit var viewModel: MyViewModel
     private lateinit var playerRecordAdapter: PlayerRecordAdapter
+    lateinit var navController: NavController  // we'll initialise it later
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.player_records)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_player_records, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
         getViewModel()
-        setRepository()
         setAdapter()
         registerLiveData()
         loadRecords("Chao")
     }
 
     private fun getViewModel() {
-        viewModel = this.run {
-            ViewModelProviders.of(
-                this,
-                SavedStateViewModelFactory(application, this)
-            )[MyViewModel::class.java]
-        }
+        viewModel = activity?.run { ViewModelProviders.of(this)[MyViewModel::class.java] }
+            ?: throw Exception("Invalid Activity")
     }
 
     private fun setAdapter() {
-        playerRecordAdapter = PlayerRecordAdapter(viewModel, viewModel.getSavedRecordsList(), this)
+        playerRecordAdapter =
+            PlayerRecordAdapter(
+                viewModel,
+                viewModel.getSavedRecordsList(),
+                context
+            )
         rvRecords.adapter = playerRecordAdapter
-        rvRecords.layoutManager = LinearLayoutManager(this)
+        rvRecords.layoutManager = LinearLayoutManager(context)
     }
 
     private fun registerLiveData() {
@@ -83,11 +98,6 @@ class PlayerRecordsActivity : AppCompatActivity() {
         tvMissedRecord.text = getString(R.string.missed_record, missed)
         tvAve.text = player.getRate().replace("%", "")
     }
-
-    private fun setRepository() {
-        viewModel.setRepository(Repository(this))
-    }
-
 
     private fun getCharData(): ArrayList<Entry> {
         val data = ArrayList<Entry>()

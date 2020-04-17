@@ -4,16 +4,15 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class PlayerSwipeCallback(context: Context) :
+abstract class PlayerSwipeCallback(context: Context?) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_white_24)
-    private val saveIcon = ContextCompat.getDrawable(context, R.drawable.ic_archive_white_24)
+    private val deleteIcon = ContextCompat.getDrawable(context!!, R.drawable.ic_delete_white_24)
+    private val saveIcon = ContextCompat.getDrawable(context!!, R.drawable.ic_archive_white_24)
 
     private val intrinsicWidth = deleteIcon!!.intrinsicWidth
     private val intrinsicHeight = deleteIcon!!.intrinsicHeight

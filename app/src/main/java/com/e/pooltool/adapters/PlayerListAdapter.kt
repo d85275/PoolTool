@@ -1,4 +1,4 @@
-package com.e.pooltool
+package com.e.pooltool.adapters
 
 import android.app.AlertDialog
 import android.content.Context
@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
+import com.e.pooltool.MyViewModel
+import com.e.pooltool.Player
+import com.e.pooltool.PlayerNames
+import com.e.pooltool.R
 import kotlinx.android.synthetic.main.item_player.view.*
 import kotlinx.android.synthetic.main.player_name.view.*
 
@@ -15,7 +18,7 @@ import kotlinx.android.synthetic.main.player_name.view.*
 class PlayerListAdapter(
     private val viewModel: MyViewModel,
     private val playerList: ArrayList<Player>,
-    private val ctx: Context
+    private val ctx: Context?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -78,7 +81,8 @@ class PlayerListAdapter(
 
         // set get random name button
         viewModel.setButtonClickedEffect(view.btRandom)
-        view.btRandom.setOnClickListener { view.etName.setText(PlayerNames().getName()) }
+        view.btRandom.setOnClickListener { view.etName.setText(
+            PlayerNames().getName()) }
 
         // set dialog buttons
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->

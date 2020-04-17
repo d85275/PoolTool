@@ -1,9 +1,10 @@
-package com.e.pooltool
+package com.e.pooltool.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.e.pooltool.R
 import com.e.pooltool.database.PlayerRecordItem
 
 class SavedPlayerAdapter(

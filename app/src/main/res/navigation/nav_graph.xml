@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.e.pooltool.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_savedPlayerFragment"
+            app:destination="@id/savedPlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerRecordsFragment"
+        android:name="com.e.pooltool.fragments.PlayerRecordsFragment"
+        android:label="fragment_player_records"
+        tools:layout="@layout/fragment_player_records" />
+    <fragment
+        android:id="@+id/savedPlayerFragment"
+        android:name="com.e.pooltool.fragments.SavedPlayerFragment"
+        android:label="fragment_saved_player"
+        tools:layout="@layout/fragment_saved_player" >
+        <action
+            android:id="@+id/action_savedPlayerFragment_to_playerRecordsFragment"
+            app:destination="@id/playerRecordsFragment" />
+    </fragment>
+</navigation>

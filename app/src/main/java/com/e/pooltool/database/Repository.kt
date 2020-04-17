@@ -1,9 +1,7 @@
-package com.e.pooltool
+package com.e.pooltool.database
 
 import android.content.Context
 import androidx.room.Room
-import com.e.pooltool.database.AppDatabase
-import com.e.pooltool.database.PlayerRecordItem
 import io.reactivex.Single
 
 class Repository(private val ctx: Context) {
