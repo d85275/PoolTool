@@ -23,7 +23,7 @@ class MainFragment : Fragment(), View.OnClickListener {
 
     private lateinit var viewModel: MyViewModel
     private lateinit var playerListAdapter: PlayerListAdapter
-    lateinit var navController: NavController  // we'll initialise it later
+    private lateinit var navController: NavController  // we'll initialise it later
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +47,6 @@ class MainFragment : Fragment(), View.OnClickListener {
         btAdd.setOnClickListener(this)
         btReset.setOnClickListener(this)
         btSavedPlayers.setOnClickListener(this)
-        btPlayerRecords.setOnClickListener(this)
         // set swipe action listener
         val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
         itemTouchHelper.attachToRecyclerView(rvPlayers)
@@ -86,11 +85,8 @@ class MainFragment : Fragment(), View.OnClickListener {
         when (v!!.id) {
             R.id.btAdd -> viewModel.addPlayer()
             R.id.btReset -> resetConfirmDialogue()
-            R.id.btPlayerRecords -> {
-                navController.navigate(R.id.action_mainFragment_to_savedPlayerFragment)
-            }
             R.id.btSavedPlayers -> {
-
+                navController.navigate(R.id.action_mainFragment_to_savedPlayerFragment)
             }
         }
     }

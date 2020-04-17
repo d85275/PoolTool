@@ -27,7 +27,7 @@ class PlayerRecordsFragment : Fragment() {
 
     private lateinit var viewModel: MyViewModel
     private lateinit var playerRecordAdapter: PlayerRecordAdapter
-    lateinit var navController: NavController  // we'll initialise it later
+    private lateinit var navController: NavController  // we'll initialise it later
 
 
     override fun onCreateView(
@@ -44,7 +44,7 @@ class PlayerRecordsFragment : Fragment() {
         getViewModel()
         setAdapter()
         registerLiveData()
-        loadRecords("Chao")
+        loadRecords()
     }
 
     private fun getViewModel() {
@@ -56,7 +56,7 @@ class PlayerRecordsFragment : Fragment() {
         playerRecordAdapter =
             PlayerRecordAdapter(
                 viewModel,
-                viewModel.getSavedRecordsList(),
+                viewModel.getDisplayedRecordsList(),
                 context
             )
         rvRecords.adapter = playerRecordAdapter
@@ -64,25 +64,25 @@ class PlayerRecordsFragment : Fragment() {
     }
 
     private fun registerLiveData() {
-        viewModel.getSavedRecordLiveDate().observe(this, Observer {
+        viewModel.getDisplayedRecordLiveDate().observe(this, Observer { list ->
             initData()
             setupLineChartData()
-            playerRecordAdapter.setData(viewModel.getSavedRecordsList())
+            playerRecordAdapter.setData(list)
             playerRecordAdapter.notifyDataSetChanged()
         })
     }
 
-    private fun loadRecords(name: String) {
-        viewModel.getSavedRecords(name)
+    private fun loadRecords() {
+        viewModel.getDisplayedRecords()
     }
 
 
     private fun initData() {
         // set player name
-        val name = "Chao"
+        val name = viewModel.getDisplayedPlayerName()
 
 
-        val list = viewModel.getSavedRecordsList()
+        val list = viewModel.getDisplayedRecordsList()
         var potted: Int = 0
         var missed: Int = 0
 
@@ -101,7 +101,7 @@ class PlayerRecordsFragment : Fragment() {
 
     private fun getCharData(): ArrayList<Entry> {
         val data = ArrayList<Entry>()
-        val list = viewModel.getSavedRecordsList()
+        val list = viewModel.getDisplayedRecordsList()
         for (i in list.indices) {
             val rate = list[i].rate.replace("%", "").trim().toFloat()
             val entry = Entry(i.toFloat(), rate)

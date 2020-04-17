@@ -8,7 +8,7 @@ class Repository(private val ctx: Context) {
 
     private val db = Room.databaseBuilder(ctx, AppDatabase::class.java, "User_Records_DB").build()
 
-    fun getAll(): List<PlayerRecordItem> {
+    fun getAll(): Single<List<PlayerRecordItem>> {
         return db.playerRecordDao().getAll()
     }
 

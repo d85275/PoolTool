@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.e.pooltool.MyViewModel
 import com.e.pooltool.Player
@@ -75,18 +76,22 @@ class PlayerListAdapter(
         val view = LayoutInflater.from(ctx).inflate(R.layout.player_name, null)
 
         // init views
-        view.etName.setText(playerList[position].name)
-        view.etName.requestFocus()
-        view.etName.selectAll()
+        setPlayerName(view.etName, playerList[position].name)
 
         // set get random name button
         viewModel.setButtonClickedEffect(view.btRandom)
-        view.btRandom.setOnClickListener { view.etName.setText(
-            PlayerNames().getName()) }
+        view.btRandom.setOnClickListener {
+            setPlayerName(view.etName, PlayerNames().getName())
+        }
 
         // set dialog buttons
         dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->
-            viewModel.renamePlayer(view.etName.text.toString(), position)
+            val input = view.etName.text.toString().trim()
+            val name = when (input.isBlank() || input.isEmpty()) {
+                true -> PlayerNames().getName()
+                false -> input
+            }
+            viewModel.renamePlayer(name, position)
         }
         dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
 
@@ -96,5 +101,11 @@ class PlayerListAdapter(
 
         // show keyboard
         dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+    }
+
+    private fun setPlayerName(etName: EditText, name: String) {
+        etName.setText(name)
+        etName.requestFocus()
+        etName.selectAll()
     }
 }

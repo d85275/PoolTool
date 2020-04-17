@@ -33,7 +33,9 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     private lateinit var repository: Repository
 
     private var _players: MutableLiveData<ArrayList<Player>> = MutableLiveData()
-    private var _savedRecord: MutableLiveData<ArrayList<PlayerRecordItem>> = MutableLiveData()
+    private var _displayedRecord: MutableLiveData<ArrayList<PlayerRecordItem>> = MutableLiveData()
+    private var _savedPlayers: MutableLiveData<ArrayList<Player>> = MutableLiveData()
+
 
     private fun getPlayerState(): MutableLiveData<ArrayList<Player>> {
         return savedStateHandle.getLiveData(PLAYER_KEY)
@@ -182,10 +184,10 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     // line chart --
     fun getLabelCount(): Int {
-        if (getSavedRecordsList().size <= 0) {
+        if (getDisplayedRecordsList().size <= 0) {
             return 0
         }
-        return getSavedRecordsList().size - 1
+        return getDisplayedRecordsList().size - 1
     }
     // line chart --
 
@@ -228,21 +230,21 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     }
 
 
-    fun getSavedRecordLiveDate(): LiveData<ArrayList<PlayerRecordItem>> {
-        if (_savedRecord.value == null) {
-            _savedRecord.value = arrayListOf()
+    fun getDisplayedRecordLiveDate(): LiveData<ArrayList<PlayerRecordItem>> {
+        if (_displayedRecord.value == null) {
+            _displayedRecord.value = arrayListOf()
         }
-        return _savedRecord
+        return _displayedRecord
     }
 
-    fun getSavedRecordsList(): ArrayList<PlayerRecordItem> {
-        return getSavedRecordLiveDate().value!!
+    fun getDisplayedRecordsList(): ArrayList<PlayerRecordItem> {
+        return getDisplayedRecordLiveDate().value!!
     }
 
-    fun getSavedRecords(name: String) {
+    fun getDisplayedRecords() {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
-            repository.getRecords(name).subscribeOn(Schedulers.io()).observeOn(
+            repository.getRecords(displayedPlayer).subscribeOn(Schedulers.io()).observeOn(
                 AndroidSchedulers.mainThread()
             ).doOnError { e ->
                 Log.e(
@@ -251,13 +253,61 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
                 )
             }
                 .subscribe { list ->
-                    _savedRecord.postValue(list as ArrayList<PlayerRecordItem>?)
+                    _displayedRecord.postValue(list as ArrayList<PlayerRecordItem>?)
                 }
         )
     }
 
-    fun getAllSavedPlayers() {
+    private var displayedPlayer: String = ""
 
+    fun getDisplayedPlayerName(): String {
+        return displayedPlayer
+    }
+
+    fun onSavedPlayerClicked(i: Int) {
+        val name = getSavedPlayerList()[i].name
+        Log.e("tag", "name: $name")
+        displayedPlayer = name
+    }
+
+
+    fun getAllSavedPlayers() {
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(
+            repository.getAll().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError { e -> Log.e("tag", "error when $e") }.subscribe { list ->
+                    _savedPlayers.postValue(getSavedPlayers(list.sortedBy { it.name }))
+                }
+        )
+    }
+
+    fun getSavedPlayerLiveDate(): LiveData<ArrayList<Player>> {
+        if (_savedPlayers.value == null) {
+            _savedPlayers.value = arrayListOf()
+        }
+        return _savedPlayers
+    }
+
+    fun getSavedPlayerList(): ArrayList<Player> {
+        return getSavedPlayerLiveDate().value!!
+    }
+
+    private fun getSavedPlayers(list: List<PlayerRecordItem>): ArrayList<Player> {
+        val players: ArrayList<Player> = arrayListOf()
+        var name = ""
+        for (i in list.indices) {
+            if (list[i].name != name) {
+                // a new player, add to the list
+                val player = Player(list[i].name, list[i].potted, list[i].missed)
+                players.add(player)
+                name = list[i].name
+            } else {
+                players[players.lastIndex].potted += list[i].potted
+                players[players.lastIndex].missed += list[i].missed
+            }
+        }
+        return players
     }
 
     // database --

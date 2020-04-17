@@ -10,7 +10,7 @@ import io.reactivex.Single
 interface PlayerRecordDao {
 
     @Query("select * from playerrecorditem")
-    fun getAll(): List<PlayerRecordItem>
+    fun getAll(): Single<List<PlayerRecordItem>>
 
     @Query("select * from playerrecorditem where id in (:userIds)")
     fun getAllByIds(userIds: IntArray): List<PlayerRecordItem>
