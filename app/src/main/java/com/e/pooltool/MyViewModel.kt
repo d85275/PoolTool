@@ -258,6 +258,13 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         )
     }
 
+    fun removeRecord(i: Int) {
+        val record = getDisplayedRecordsList()[i]
+        Single.fromCallable { repository.deleteRecord(record) }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).doOnSuccess { getDisplayedRecords() }
+            .subscribe()
+    }
+
     private var displayedPlayer: String = ""
 
     fun getDisplayedPlayerName(): String {
@@ -308,6 +315,21 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
             }
         }
         return players
+    }
+
+    fun getSavedPlayerName(i: Int): String {
+        return getSavedPlayerList()[i].name
+
+    }
+
+    fun removeSavedPlayer(i: Int) {
+        val name = getSavedPlayerName(i)
+
+        Single.fromCallable { repository.deletePlayer(name) }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).doOnSuccess {
+                // update the saved players list when the data is deleted
+                getAllSavedPlayers()
+            }.subscribe()
     }
 
     // database --

@@ -18,9 +18,13 @@ interface PlayerRecordDao {
     @Query("select * from playerrecorditem where name = (:playerName)")
     fun getRecords(playerName: String): Single<List<PlayerRecordItem>>
 
+    @Query("delete from playerrecorditem where name = (:name)")
+    fun delete(name: String)
+
     @Insert
     fun insertAll(vararg playerRecords: PlayerRecordItem)
 
     @Delete
     fun delete(player: PlayerRecordItem)
+
 }

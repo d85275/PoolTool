@@ -38,6 +38,11 @@ class SavedPlayerAdapter(
         holder.itemView.setOnClickListener {
             callback.savedPlayerClicked(position)
         }
+        holder.itemView.setOnLongClickListener {
+            Log.e( "tag","long")
+            true
+        }
+
     }
 
     fun setData(list: ArrayList<Player>) {

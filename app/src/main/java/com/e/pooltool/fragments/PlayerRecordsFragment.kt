@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e.pooltool.MyViewModel
-import com.e.pooltool.Player
+import androidx.recyclerview.widget.RecyclerView
+import com.e.pooltool.*
 import com.e.pooltool.adapters.PlayerRecordAdapter
-import com.e.pooltool.R
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -28,6 +28,7 @@ class PlayerRecordsFragment : Fragment() {
     private lateinit var viewModel: MyViewModel
     private lateinit var playerRecordAdapter: PlayerRecordAdapter
     private lateinit var navController: NavController  // we'll initialise it later
+    private lateinit var dialogHelper: DialogHelper
 
 
     override fun onCreateView(
@@ -42,14 +43,20 @@ class PlayerRecordsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         getViewModel()
+        getDialogHelper()
         setAdapter()
         registerLiveData()
         loadRecords()
+        setListeners()
     }
 
     private fun getViewModel() {
         viewModel = activity?.run { ViewModelProviders.of(this)[MyViewModel::class.java] }
             ?: throw Exception("Invalid Activity")
+    }
+
+    private fun getDialogHelper() {
+        dialogHelper = DialogHelper(context, viewModel)
     }
 
     private fun setAdapter() {
@@ -76,6 +83,19 @@ class PlayerRecordsFragment : Fragment() {
         viewModel.getDisplayedRecords()
     }
 
+    private fun setListeners() {
+        val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
+        itemTouchHelper.attachToRecyclerView(rvRecords)
+    }
+
+    private fun getSwipeToDeleteCallback(): SwipeToDeleteCallback {
+        return object : SwipeToDeleteCallback(context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                dialogHelper.deleteRecord(position, playerRecordAdapter)
+            }
+        }
+    }
 
     private fun initData() {
         // set player name

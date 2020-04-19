@@ -20,8 +20,11 @@ class Repository(private val ctx: Context) {
         db.playerRecordDao().insertAll(playerRecord)
     }
 
-
     fun deleteRecord(playerRecord: PlayerRecordItem) {
         db.playerRecordDao().delete(playerRecord)
+    }
+
+    fun deletePlayer(name: String) {
+        db.playerRecordDao().delete(name)
     }
 }

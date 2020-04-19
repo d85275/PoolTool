@@ -1,6 +1,5 @@
 package com.e.pooltool.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.e.pooltool.DialogHelper
 import com.e.pooltool.MyViewModel
 import com.e.pooltool.adapters.PlayerListAdapter
 import com.e.pooltool.PlayerSwipeCallback
@@ -24,6 +24,7 @@ class MainFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: MyViewModel
     private lateinit var playerListAdapter: PlayerListAdapter
     private lateinit var navController: NavController  // we'll initialise it later
+    private lateinit var dialogHelper: DialogHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +38,7 @@ class MainFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         getViewModel()
+        getDialogHelper()
         setListeners()
         setEffects()
         setAdapter()
@@ -56,6 +58,10 @@ class MainFragment : Fragment(), View.OnClickListener {
         viewModel.setButtonClickedEffect(btAdd)
         viewModel.setButtonClickedEffect(btReset)
         viewModel.setButtonClickedEffect(btSavedPlayers)
+    }
+
+    private fun getDialogHelper() {
+        dialogHelper = DialogHelper(context, viewModel)
     }
 
     private fun getViewModel() {
@@ -84,7 +90,7 @@ class MainFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.btAdd -> viewModel.addPlayer()
-            R.id.btReset -> resetConfirmDialogue()
+            R.id.btReset -> dialogHelper.resetPlayer()
             R.id.btSavedPlayers -> {
                 navController.navigate(R.id.action_mainFragment_to_savedPlayerFragment)
             }
@@ -92,45 +98,15 @@ class MainFragment : Fragment(), View.OnClickListener {
     }
 
 
-    private fun resetConfirmDialogue() {
-        val dialogBuilder = AlertDialog.Builder(context)
-        dialogBuilder.setTitle(getString(R.string.info))
-        dialogBuilder.setMessage(R.string.reset_score)
-        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.resetScores() }
-        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
-        dialogBuilder.show()
-    }
-
-    private fun deleteConfirmDialogue(position: Int) {
-        val dialogBuilder = AlertDialog.Builder(context)
-        dialogBuilder.setTitle(viewModel.getPlayerName(position))
-        dialogBuilder.setMessage(getString(R.string.delete))
-        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ -> viewModel.removePlayer(position) }
-        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
-        dialogBuilder.show()
-    }
-
-    private fun saveConfirmDialogue(position: Int) {
-        val dialogBuilder = AlertDialog.Builder(context)
-        dialogBuilder.setTitle(viewModel.getPlayerName(position))
-        dialogBuilder.setMessage(getString(R.string.save))
-        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->
-            //viewModel.removePlayer(position)
-            viewModel.saveRecord(position)
-        }
-        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> playerListAdapter.notifyDataSetChanged() }
-        dialogBuilder.show()
-    }
-
     private fun getSwipeToDeleteCallback(): PlayerSwipeCallback {
         return object : PlayerSwipeCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    deleteConfirmDialogue(position)
+                    dialogHelper.deletePlayer(position, playerListAdapter)
                 } else if (direction == ItemTouchHelper.RIGHT) {
-                    saveConfirmDialogue(position)
+                    dialogHelper.savePlayer(position, playerListAdapter)
                 }
             }
         }

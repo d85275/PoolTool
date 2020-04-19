@@ -30,7 +30,7 @@ abstract class PlayerSwipeCallback(context: Context?) :
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          */
-        if (viewHolder.adapterPosition == 10) return 0
+        //if (viewHolder.adapterPosition == 10) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
@@ -82,6 +82,13 @@ abstract class PlayerSwipeCallback(context: Context?) :
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
+
+    private var left: Float = 0f
+    private var top: Float = 0f
+    private var right: Float = 0f
+    private var bottom: Float = 0f
+    private var canvas: Canvas? = null
+
     // dir: 0 -> swipe right
     // dir: 1 -> swipe left
     private fun drawBackground(
@@ -95,6 +102,8 @@ abstract class PlayerSwipeCallback(context: Context?) :
                 (viewHolder.itemView.left + dX - 15).toInt(),
                 viewHolder.itemView.bottom
             )
+            left = (viewHolder.itemView.left).toFloat()
+            right = viewHolder.itemView.left + dX - 15
         } else {
             // red eb4d42
             background.color = Color.parseColor("#eb4d42")
@@ -105,7 +114,17 @@ abstract class PlayerSwipeCallback(context: Context?) :
                 viewHolder.itemView.right,
                 viewHolder.itemView.bottom
             )
+
+            left = (viewHolder.itemView.right + dX.toInt() + 15).toFloat()
+            right = viewHolder.itemView.right.toFloat()
         }
+
+        // save state
+
+        canvas = c
+        top = viewHolder.itemView.top.toFloat()
+        bottom = viewHolder.itemView.bottom.toFloat()
+
         background.draw(c)
 
     }
@@ -113,9 +132,9 @@ abstract class PlayerSwipeCallback(context: Context?) :
     private fun drawIcon(c: Canvas, dir: Int, viewHolder: RecyclerView.ViewHolder) {
         val itemHeight = viewHolder.itemView.bottom - viewHolder.itemView.top
 
-        val iconTop: Int= viewHolder.itemView.top + (itemHeight - intrinsicHeight) / 2
-        val iconMargin: Int= (itemHeight - intrinsicHeight) / 2
-        val iconBottom: Int= iconTop + intrinsicHeight
+        val iconTop: Int = viewHolder.itemView.top + (itemHeight - intrinsicHeight) / 2
+        val iconMargin: Int = (itemHeight - intrinsicHeight) / 2
+        val iconBottom: Int = iconTop + intrinsicHeight
 
         val iconLeft: Int
         val iconRight: Int
@@ -132,11 +151,11 @@ abstract class PlayerSwipeCallback(context: Context?) :
             iconRight = viewHolder.itemView.right - iconMargin
         }
 
-
         // Draw the delete icon
         icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
         icon.draw(c)
     }
+
 
     private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
         c?.drawRect(left, top, right, bottom, clearPaint)
