@@ -234,8 +234,6 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
             player.name, player.potted, player.missed,
             player.fouled, player.getRate(), date
         )
-        Log.e("te", "id: ${record.id}")
-
         //Thread(Runnable { repository.addRecord(record) }).start()
         // save the data into db in background
         Single.fromCallable { repository.addRecord(record) }
@@ -288,7 +286,6 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     fun onSavedPlayerClicked(i: Int) {
         val name = getSavedPlayerList()[i].name
-        Log.e("tag", "name: $name")
         displayedPlayer = name
     }
 

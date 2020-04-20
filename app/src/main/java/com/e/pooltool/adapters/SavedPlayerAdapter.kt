@@ -1,7 +1,6 @@
 package com.e.pooltool.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +8,6 @@ import com.e.pooltool.ISavedPlayerCallback
 import com.e.pooltool.MyViewModel
 import com.e.pooltool.Player
 import com.e.pooltool.R
-import com.e.pooltool.database.PlayerRecordItem
 import kotlinx.android.synthetic.main.item_saved_player.view.*
 
 class SavedPlayerAdapter(

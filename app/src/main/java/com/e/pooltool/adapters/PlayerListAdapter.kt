@@ -1,16 +1,12 @@
 package com.e.pooltool.adapters
 
-import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.e.pooltool.*
 import kotlinx.android.synthetic.main.item_player.view.*
-import kotlinx.android.synthetic.main.player_name.view.*
 
 
 class PlayerListAdapter(
