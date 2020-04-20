@@ -30,7 +30,7 @@ class DialogHelper(private val context: Context?, private val viewModel: MyViewM
             R.string.rate_and_ratio,
             record.rate,
             record.potted,
-            record.potted + record.missed
+            record.getTotal()
         )
         dialogBuilder.setTitle(title)
         dialogBuilder.setMessage(context.getString(R.string.delete))

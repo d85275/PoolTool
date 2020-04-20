@@ -18,4 +18,8 @@ data class Player(var name: String, var potted: Int = 0, var missed: Int = 0, va
         df.roundingMode = RoundingMode.CEILING
         return "${df.format(num)} %"
     }
+
+    fun getTotal(): Int {
+        return potted + missed + fouled
+    }
 }

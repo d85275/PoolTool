@@ -14,4 +14,8 @@ class PlayerRecordItem(
     @ColumnInfo(name = "fouled") val fouled: Int,
     @ColumnInfo(name = "rate") val rate: String,
     @ColumnInfo(name = "date") val date: String
-)
+) {
+    fun getTotal(): Int {
+        return potted + missed + fouled
+    }
+}
