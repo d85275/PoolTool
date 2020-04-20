@@ -63,7 +63,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="10dp"
+                        android:layout_width="12dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:text="@string/potted" />
@@ -84,7 +84,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="10dp"
+                        android:layout_width="12dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:text="@string/missed" />
@@ -104,7 +104,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="10dp"
+                        android:layout_width="12dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:text="@string/fouled" />
