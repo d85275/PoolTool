@@ -9,40 +9,129 @@
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1.5"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" />
+        android:gravity="center_vertical" />
 
-    <TextView
-        android:id="@+id/tvPotted"
-        android:layout_width="0dp"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_weight="1"
-        android:gravity="end"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" />
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvMissed"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_weight="1"
-        android:gravity="end"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="@string/potted" />
+
+            <Button
+                android:id="@+id/btAddPotted"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvPotted"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/btRemovePotted"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="@string/missed" />
+
+            <Button
+                android:id="@+id/btAddMissed"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvMissed"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="99" />
+
+            <Button
+                android:id="@+id/btRemoveMissed"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="@string/fouled" />
+
+            <Button
+                android:id="@+id/btAddFouled"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvFouled"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/btRemoveFouled"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvRate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
+        android:textSize="20sp"
         android:gravity="end"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:textStyle="bold" />
 
 </LinearLayout>

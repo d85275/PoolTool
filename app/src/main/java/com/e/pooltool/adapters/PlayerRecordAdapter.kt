@@ -18,7 +18,8 @@ class PlayerRecordAdapter(
     private val ctx: Context?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val fileIcon = ContextCompat.getDrawable(ctx!!,
+    private val fileIcon = ContextCompat.getDrawable(
+        ctx!!,
         R.drawable.ic_chevron_right_black_24dp
     )
 
@@ -27,7 +28,6 @@ class PlayerRecordAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.e("123", "on create view holder")
         val view: View =
             LayoutInflater.from(ctx).inflate(R.layout.item_player_record, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
@@ -40,9 +40,10 @@ class PlayerRecordAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val potted = playerRecord[position].potted
         val missed = playerRecord[position].missed
+        val fouled = playerRecord[position].fouled
 
         holder.itemView.ivIcon.setImageDrawable(fileIcon)
-        holder.itemView.tvRatio.text = ctx!!.getString(R.string.ratio, potted, missed)
+        holder.itemView.tvRatio.text = ctx!!.getString(R.string.ratio, potted, missed, fouled)
         holder.itemView.tvRate.text = playerRecord[position].rate
         holder.itemView.tvDate.text = playerRecord[position].date
 

@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">PoolTool</string>
     <string name="player_name">Name</string>
-    <string name="potted">Potted</string>
-    <string name="missed">Missed</string>
+    <string name="potted">P</string>
+    <string name="missed">M</string>
+    <string name="fouled">F</string>
     <string name="rate">Rate</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
@@ -10,8 +11,9 @@
     <string name="info">Info</string>
     <string name="delete">Delete the data for this player?</string>
     <string name="save">Save the data for this player?</string>
-    <string name="ratio">(%1$d/%2$d) </string>
+    <string name="ratio">(%1$d/%2$d/%3$d) </string>
     <string name="rate_and_ratio">%1s (%2$d/%3$d) </string>
     <string name="potted_record">Potted: %1$d</string>
     <string name="missed_record">Missed: %1$d</string>
+    <string name="fouled_record">Fouled: %1$d</string>
 </resources>

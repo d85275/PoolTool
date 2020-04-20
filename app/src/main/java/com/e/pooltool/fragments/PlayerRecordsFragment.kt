@@ -105,17 +105,20 @@ class PlayerRecordsFragment : Fragment() {
         val list = viewModel.getDisplayedRecordsList()
         var potted: Int = 0
         var missed: Int = 0
+        var fouled = 0
 
         for (i in 0 until list.size) {
             potted += list[i].potted
             missed += list[i].missed
+            fouled += list[i].fouled
         }
 
-        val player = Player(name, potted, missed)
+        val player = Player(name, potted, missed, fouled)
 
         tvPlayerName.text = name
-        tvPottedRecord.text = getString(R.string.potted_record, potted)
-        tvMissedRecord.text = getString(R.string.missed_record, missed)
+        tvPottedRecord.text = potted.toString()
+        tvMissedRecord.text = missed.toString()
+        tvFouledRecord.text = fouled.toString()
         tvAve.text = player.getRate().replace("%", "")
     }
 

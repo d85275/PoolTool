@@ -30,7 +30,7 @@ class SavedPlayerAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.tvName.text = list[position].name
-        val total = list[position].potted + list[position].missed
+        val total = list[position].potted + list[position].missed + list[position].fouled
         val potted = list[position].potted
         val rate = list[position].getRate()
         val data = ctx!!.getString(R.string.rate_and_ratio, rate, potted, total)
@@ -38,11 +38,6 @@ class SavedPlayerAdapter(
         holder.itemView.setOnClickListener {
             callback.savedPlayerClicked(position)
         }
-        holder.itemView.setOnLongClickListener {
-            Log.e( "tag","long")
-            true
-        }
-
     }
 
     fun setData(list: ArrayList<Player>) {

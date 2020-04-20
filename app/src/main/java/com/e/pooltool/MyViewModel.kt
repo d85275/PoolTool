@@ -120,6 +120,21 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         _players.postValue(list)
     }
 
+    fun playerFouled(i: Int) {
+        val list = _players.value!!
+        list[i].fouled = list[i].fouled + 1
+        _players.postValue(list)
+    }
+
+    fun undoPlayerFouled(i: Int) {
+        val list = _players.value!!
+        if (list[i].fouled <= 0) {
+            return
+        }
+        list[i].fouled = list[i].fouled - 1
+        _players.postValue(list)
+    }
+
     fun getRateTextColor(rate: String): Int {
         val r: Double = rate.replace("%", "").toDouble()
         val base: Int
@@ -217,7 +232,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         val record = PlayerRecordItem(
             0,
             player.name, player.potted, player.missed,
-            player.getRate(), date
+            player.fouled, player.getRate(), date
         )
         Log.e("te", "id: ${record.id}")
 
@@ -306,12 +321,13 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         for (i in list.indices) {
             if (list[i].name != name) {
                 // a new player, add to the list
-                val player = Player(list[i].name, list[i].potted, list[i].missed)
+                val player = Player(list[i].name, list[i].potted, list[i].missed, list[i].fouled)
                 players.add(player)
                 name = list[i].name
             } else {
                 players[players.lastIndex].potted += list[i].potted
                 players[players.lastIndex].missed += list[i].missed
+                players[players.lastIndex].fouled += list[i].fouled
             }
         }
         return players

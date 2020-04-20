@@ -6,11 +6,12 @@ import androidx.room.PrimaryKey
 
 
 @Entity
- class PlayerRecordItem(
+class PlayerRecordItem(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "potted") val potted: Int,
     @ColumnInfo(name = "missed") val missed: Int,
+    @ColumnInfo(name = "fouled") val fouled: Int,
     @ColumnInfo(name = "rate") val rate: String,
     @ColumnInfo(name = "date") val date: String
 )
