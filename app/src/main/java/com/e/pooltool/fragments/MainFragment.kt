@@ -77,6 +77,10 @@ class MainFragment : Fragment(), View.OnClickListener {
             viewModel.getPlayerList(),
             context
         )
+        // use this setting to improve performance because we do not intent
+        //        // to change the layout size of the RecyclerView
+        rvPlayers.setHasFixedSize(true)
+
         rvPlayers.adapter = playerListAdapter
         rvPlayers.layoutManager = LinearLayoutManager(activity)
     }

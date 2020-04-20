@@ -66,6 +66,10 @@ class PlayerRecordsFragment : Fragment() {
                 viewModel.getDisplayedRecordsList(),
                 context
             )
+        // use this setting to improve performance because we do not intent
+        // to change the layout size of the RecyclerView
+        rvRecords.setHasFixedSize(true)
+
         rvRecords.adapter = playerRecordAdapter
         rvRecords.layoutManager = LinearLayoutManager(context)
     }
