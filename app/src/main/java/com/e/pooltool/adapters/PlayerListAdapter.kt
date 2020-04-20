@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
-import com.e.pooltool.MyViewModel
-import com.e.pooltool.Player
-import com.e.pooltool.PlayerNames
-import com.e.pooltool.R
+import com.e.pooltool.*
 import kotlinx.android.synthetic.main.item_player.view.*
 import kotlinx.android.synthetic.main.player_name.view.*
 
@@ -22,8 +19,10 @@ class PlayerListAdapter(
     private val ctx: Context?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private lateinit var dialogHelper: DialogHelper
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        dialogHelper = DialogHelper(ctx, viewModel)
         val view: View = LayoutInflater.from(ctx).inflate(R.layout.item_player, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
     }
@@ -49,7 +48,7 @@ class PlayerListAdapter(
     }
 
     private fun setClickListeners(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.tvName.setOnClickListener { renameDialog(position) }
+        holder.itemView.tvName.setOnClickListener { dialogHelper.renameDialog(position) }
         holder.itemView.btAddPotted.setOnClickListener { viewModel.playerPotted(position) }
         holder.itemView.btRemovePotted.setOnClickListener { viewModel.undoPlayerPotted(position) }
         holder.itemView.btAddMissed.setOnClickListener { viewModel.playerMissed(position) }
@@ -58,52 +57,5 @@ class PlayerListAdapter(
         holder.itemView.btRemoveFouled.setOnClickListener { viewModel.undoPlayerFouled(position) }
     }
 
-    private fun setClickEffects(holder: RecyclerView.ViewHolder) {
-        viewModel.setButtonClickedEffect(holder.itemView.btAddPotted)
-        viewModel.setButtonClickedEffect(holder.itemView.btRemovePotted)
-        viewModel.setButtonClickedEffect(holder.itemView.btAddMissed)
-        viewModel.setButtonClickedEffect(holder.itemView.btRemoveMissed)
-        viewModel.setButtonClickedEffect(holder.itemView.btAddFouled)
-        viewModel.setButtonClickedEffect(holder.itemView.btRemoveFouled)
-    }
 
-
-    private fun renameDialog(position: Int) {
-        val dialogBuilder = AlertDialog.Builder(ctx)
-
-        val view = LayoutInflater.from(ctx).inflate(R.layout.player_name, null)
-
-        // init views
-        setPlayerName(view.etName, playerList[position].name)
-
-        // set get random name button
-        viewModel.setButtonClickedEffect(view.btRandom)
-        view.btRandom.setOnClickListener {
-            setPlayerName(view.etName, PlayerNames().getName())
-        }
-
-        // set dialog buttons
-        dialogBuilder.setPositiveButton(R.string.confirm) { _, _ ->
-            val input = view.etName.text.toString().trim()
-            val name = when (input.isBlank() || input.isEmpty()) {
-                true -> PlayerNames().getName()
-                false -> input
-            }
-            viewModel.renamePlayer(name, position)
-        }
-        dialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> }
-
-        val dialog = dialogBuilder.create()
-        dialog.setView(view, 40, 100, 40, 0)
-        dialog.show()
-
-        // show keyboard
-        dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-    }
-
-    private fun setPlayerName(etName: EditText, name: String) {
-        etName.setText(name)
-        etName.requestFocus()
-        etName.selectAll()
-    }
 }
