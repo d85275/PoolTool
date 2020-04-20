@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,7 @@ class MainFragment : Fragment(), View.OnClickListener {
         setListeners()
         setEffects()
         setAdapter()
+        addDivider()
         registerLiveData()
     }
 
@@ -77,6 +79,12 @@ class MainFragment : Fragment(), View.OnClickListener {
         )
         rvPlayers.adapter = playerListAdapter
         rvPlayers.layoutManager = LinearLayoutManager(activity)
+    }
+
+    private fun addDivider() {
+        val dividerItemDecoration =
+            DividerItemDecoration(rvPlayers.context, LinearLayoutManager(activity).orientation)
+        rvPlayers.addItemDecoration(dividerItemDecoration)
     }
 
     private fun registerLiveData() {
