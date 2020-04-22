@@ -20,11 +20,10 @@ import com.e.pooltool.PlayerSwipeCallback
 import com.e.pooltool.R
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : Fragment(), View.OnClickListener {
+class MainFragment : Fragment() {
 
     private lateinit var viewModel: MyViewModel
     private lateinit var playerListAdapter: PlayerListAdapter
-    private lateinit var navController: NavController  // we'll initialise it later
     private lateinit var dialogHelper: DialogHelper
 
     override fun onCreateView(
@@ -37,29 +36,18 @@ class MainFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
         getViewModel()
         getDialogHelper()
         setListeners()
-        setEffects()
         setAdapter()
         addDivider()
         registerLiveData()
     }
 
     private fun setListeners() {
-        btAdd.setOnClickListener(this)
-        btReset.setOnClickListener(this)
-        btSavedPlayers.setOnClickListener(this)
         // set swipe action listener
         val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
         itemTouchHelper.attachToRecyclerView(rvPlayers)
-    }
-
-    private fun setEffects() {
-        viewModel.setButtonClickedEffect(btAdd)
-        viewModel.setButtonClickedEffect(btReset)
-        viewModel.setButtonClickedEffect(btSavedPlayers)
     }
 
     private fun getDialogHelper() {
@@ -95,18 +83,10 @@ class MainFragment : Fragment(), View.OnClickListener {
         viewModel.getPlayerListLiveData()
             .observe(this, Observer { list ->
                 playerListAdapter.notifyDataSetChanged()
-                viewModel.setResetButtonVisibility(list.size, btReset)
+                if (list.size <= 0) {
+                    activity!!.invalidateOptionsMenu()
+                }
             })
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.btAdd -> viewModel.addPlayer()
-            R.id.btReset -> dialogHelper.resetPlayer()
-            R.id.btSavedPlayers -> {
-                navController.navigate(R.id.action_mainFragment_to_savedPlayerFragment)
-            }
-        }
     }
 
 

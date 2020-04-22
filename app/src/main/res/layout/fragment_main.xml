@@ -3,39 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="25dp"
     android:orientation="vertical"
     tools:context=".fragments.MainFragment">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginBottom="25dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/btReset"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/ic_update_black_24dp" />
-
-        <ImageButton
-            android:id="@+id/btSavedPlayers"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/ic_stars_black_24dp" />
-
-        <ImageButton
-            android:id="@+id/btAdd"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/ic_person_add_black_24dp" />
-
-    </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView

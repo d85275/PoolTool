@@ -7,12 +7,14 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
+import android.view.Menu
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.e.pooltool.database.PlayerRecordItem
 import com.e.pooltool.database.Repository
 import io.reactivex.Single
@@ -194,11 +196,13 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     // the number of the players
     // if there is no player, don't show the reset button
-    fun setResetButtonVisibility(size: Int, btReset: View) {
-        if (size > 0 && btReset.visibility == View.INVISIBLE) {
-            btReset.visibility = View.VISIBLE
-        } else if (size <= 0) {
-            btReset.visibility = View.INVISIBLE
+    fun setResetButtonVisibility(menu: Menu?) {
+        val btReset = menu!!.findItem(R.id.btReset)
+
+        if (getPlayerList().size > 0 && !btReset.isVisible) {
+            btReset.isVisible = true
+        } else if (getPlayerList().size <= 0) {
+            btReset.isVisible = false
         }
     }
 
@@ -363,4 +367,22 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     }
 
     // database --
+
+    // fragments
+    private var desId = -1
+
+
+    fun setDesId(id: Int) {
+        desId = id
+    }
+
+    private fun getDesId(): Int {
+        return desId
+    }
+
+    fun isMainFragment(): Boolean {
+        return getDesId() == R.id.mainFragment
+    }
+
+    // fragments
 }
