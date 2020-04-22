@@ -16,4 +16,5 @@
     <string name="potted_record">Potted: %1$d</string>
     <string name="missed_record">Missed: %1$d</string>
     <string name="fouled_record">Fouled: %1$d</string>
+    <string name="double_click_to_exit">Double click to exit</string>
 </resources>

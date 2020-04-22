@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.navigation.NavController
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         getViewModel()
         getNavController()
         setRepository()
+        setToolBar()
     }
 
     override fun onResume() {
@@ -80,5 +83,35 @@ class MainActivity : AppCompatActivity() {
 
     private fun setRepository() {
         viewModel.setRepository(Repository(this))
+    }
+
+    private fun setToolBar() {
+        val actionbar = supportActionBar!!
+        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
+
+        if (viewModel.isMainFragment()) {
+
+            if (viewModel.isAllowedToExit()) {
+                super.onBackPressed()
+            } else {
+                Toast.makeText(this, R.string.double_click_to_exit, Toast.LENGTH_SHORT).show()
+                viewModel.requestToExit()
+            }
+
+        } else {
+            super.onBackPressed()
+
+        }
     }
 }

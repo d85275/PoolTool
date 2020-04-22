@@ -14,7 +14,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
 import com.e.pooltool.database.PlayerRecordItem
 import com.e.pooltool.database.Repository
 import io.reactivex.Single
@@ -23,6 +22,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 
 
 class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -385,4 +385,21 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     }
 
     // fragments
+
+    // double click to exit the app
+    private var isBackClicked = false
+
+
+    fun isAllowedToExit(): Boolean {
+        return isBackClicked
+    }
+
+    fun requestToExit() {
+        isBackClicked = true
+        Single.fromCallable { }.subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread()).delay(300, TimeUnit.MILLISECONDS)
+            .doOnSuccess { isBackClicked = false }.subscribe()
+    }
+
+    // double click to exit the app
 }
