@@ -30,6 +30,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     // Keep the key as a constant
     companion object {
         private const val PLAYER_KEY = "PLAYER_KEY"
+        private const val EXIT_DELAY_TIME = 400L // 0.4 second
     }
 
     private lateinit var repository: Repository
@@ -396,8 +397,8 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     fun requestToExit() {
         isBackClicked = true
-        Single.fromCallable { }.subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(AndroidSchedulers.mainThread()).delay(300, TimeUnit.MILLISECONDS)
+        Single.fromCallable {}.subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread()).delay(EXIT_DELAY_TIME, TimeUnit.MILLISECONDS)
             .doOnSuccess { isBackClicked = false }.subscribe()
     }
 
