@@ -74,18 +74,14 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     private fun resetScoreForPlayer(i: Int) {
         val list = _players.value!!
-        list[i].potted = 0
-        list[i].missed = 0
-        list[i].fouled = 0
+        list[i].reset()
         _players.postValue(list)
     }
 
     fun resetScores() {
         val list = _players.value!!
         for (i in 0 until list.size) {
-            list[i].potted = 0
-            list[i].missed = 0
-            list[i].fouled = 0
+            list[i].reset()
         }
         _players.postValue(list)
     }
