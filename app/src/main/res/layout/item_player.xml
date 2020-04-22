@@ -130,7 +130,7 @@
         </LinearLayout>
 
     </LinearLayout>
-    
+
     <TextView
         android:id="@+id/tvRate"
         android:layout_width="0dp"

@@ -46,7 +46,7 @@ class PlayerRecordsFragment : Fragment() {
         getDialogHelper()
         setAdapter()
         registerLiveData()
-        loadRecords()
+        //loadRecords()
         setListeners()
     }
 
@@ -83,9 +83,12 @@ class PlayerRecordsFragment : Fragment() {
         })
     }
 
+    /*
     private fun loadRecords() {
         viewModel.getDisplayedRecords()
     }
+
+     */
 
     private fun setListeners() {
         val itemTouchHelper = ItemTouchHelper(getSwipeToDeleteCallback())
@@ -102,27 +105,12 @@ class PlayerRecordsFragment : Fragment() {
     }
 
     private fun initData() {
-        // set player name
-        val name = viewModel.getDisplayedPlayerName()
 
-
-        val list = viewModel.getDisplayedRecordsList()
-        var potted: Int = 0
-        var missed: Int = 0
-        var fouled = 0
-
-        for (i in 0 until list.size) {
-            potted += list[i].potted
-            missed += list[i].missed
-            fouled += list[i].fouled
-        }
-
-        val player = Player(name, potted, missed, fouled)
-
-        tvPlayerName.text = name
-        tvPottedRecord.text = potted.toString()
-        tvMissedRecord.text = missed.toString()
-        tvFouledRecord.text = fouled.toString()
+        val player = viewModel.getDisplayedData()
+        tvPlayerName.text = player.name
+        tvPottedRecord.text = player.potted.toString()
+        tvMissedRecord.text = player.missed.toString()
+        tvFouledRecord.text = player.fouled.toString()
         tvAve.text = player.getRate().replace("%", "")
     }
 

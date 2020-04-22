@@ -254,10 +254,26 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         return getDisplayedRecordLiveDate().value!!
     }
 
-    fun getDisplayedRecords() {
+    fun getDisplayedData(): Player {
+        val list = getDisplayedRecordsList()
+        val name = if (list.size > 0) list[0].name else ""
+        var potted = 0
+        var missed = 0
+        var fouled = 0
+
+        for (i in 0 until list.size) {
+            potted += list[i].potted
+            missed += list[i].missed
+            fouled += list[i].fouled
+        }
+
+        return Player(name, potted, missed, fouled)
+    }
+
+    private fun getDisplayedRecords(name: String) {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
-            repository.getRecords(displayedPlayer).subscribeOn(Schedulers.io()).observeOn(
+            repository.getRecords(name).subscribeOn(Schedulers.io()).observeOn(
                 AndroidSchedulers.mainThread()
             ).doOnError { e ->
                 Log.e(
@@ -273,20 +289,16 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     fun removeRecord(i: Int) {
         val record = getDisplayedRecordsList()[i]
+        val name = record.name
         Single.fromCallable { repository.deleteRecord(record) }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).doOnSuccess { getDisplayedRecords() }
+            .observeOn(AndroidSchedulers.mainThread()).doOnSuccess { getDisplayedRecords(name) }
             .subscribe()
     }
 
-    private var displayedPlayer: String = ""
-
-    fun getDisplayedPlayerName(): String {
-        return displayedPlayer
-    }
 
     fun onSavedPlayerClicked(i: Int) {
         val name = getSavedPlayerList()[i].name
-        displayedPlayer = name
+        getDisplayedRecords(name)
     }
 
 
