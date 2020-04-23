@@ -107,10 +107,12 @@ class PlayerRecordsFragment : Fragment() {
     private fun initData() {
         val player = viewModel.getDisplayedData()
         tvPlayerName.text = player.name
-        tvPottedRecord.text = player.potted.toString()
-        tvMissedRecord.text = player.missed.toString()
-        tvFouledRecord.text = player.fouled.toString()
+        val total = player.potted + player.missed + player.fouled
+        tvPottedRecord.text = viewModel.getRate(player.potted, total)
+        tvMissedRecord.text = viewModel.getRate(player.missed, total)
+        tvFouledRecord.text = viewModel.getRate(player.fouled, total)
         tvAve.text = player.getRate().replace("%", "")
+        viewModel.setTextColor(player.getRate(), tvAve)
         tvDate.text = viewModel.getDateDuration()
     }
 

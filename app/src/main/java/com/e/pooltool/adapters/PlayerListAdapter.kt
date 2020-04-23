@@ -40,7 +40,7 @@ class PlayerListAdapter(
         holder.itemView.tvFouled.text = playerList[position].fouled.toString()
         holder.itemView.tvRate.text = playerList[position].getRate()
 
-        holder.itemView.tvRate.setTextColor(viewModel.getRateTextColor(playerList[position].getRate()))
+        viewModel.setTextColor(playerList[position].getRate(),holder.itemView.tvRate)
     }
 
     private fun setClickListeners(holder: RecyclerView.ViewHolder, position: Int) {

@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MotionEvent
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -20,6 +21,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
@@ -141,6 +144,10 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         }
         list[i].fouled = list[i].fouled - 1
         _players.postValue(list)
+    }
+
+    fun setTextColor(rate: String, view: TextView) {
+        view.setTextColor(getRateTextColor(rate))
     }
 
     fun getRateTextColor(rate: String): Int {
@@ -288,6 +295,16 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         }
 
         return Player(name, potted, missed, fouled)
+    }
+
+    fun getRate(num: Int, total: Int): String {
+        if (num == 0) {
+            return "0/$total  (0%)"
+        }
+        val n = (num.toDouble() / total) * 100
+        val df = DecimalFormat("#.#")
+        df.roundingMode = RoundingMode.CEILING
+        return "$num/$total  (${df.format(n)} %)"
     }
 
     private fun getDisplayedRecords(name: String) {
