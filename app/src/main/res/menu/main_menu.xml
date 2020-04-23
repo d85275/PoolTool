@@ -6,18 +6,18 @@
         android:id="@+id/btReset"
         android:icon="@drawable/ic_update_white_24dp"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/btSavedPlayers"
         android:icon="@drawable/ic_stars_white_24dp"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 
     <item
         android:id="@+id/btAdd"
         android:icon="@drawable/ic_person_add_white_24dp"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
