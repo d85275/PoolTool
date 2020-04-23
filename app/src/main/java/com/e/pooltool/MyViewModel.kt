@@ -264,6 +264,16 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         return getDisplayedRecordLiveDate().value!!
     }
 
+    fun getDateDuration(): String {
+        val list = getDisplayedRecordsList()
+        if (list.size <= 0) {
+            return ""
+        }
+        val date1 = list[0].date.split(" ")[0]
+        val date2 = list[list.lastIndex].date.split(" ")[0]
+        return "$date1 - $date2"
+    }
+
     fun getDisplayedData(): Player {
         val list = getDisplayedRecordsList()
         val name = if (list.size > 0) list[0].name else ""
