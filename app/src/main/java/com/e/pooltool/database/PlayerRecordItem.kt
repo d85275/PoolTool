@@ -8,14 +8,26 @@ import androidx.room.PrimaryKey
 @Entity
 class PlayerRecordItem(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "potted") val potted: Int,
-    @ColumnInfo(name = "missed") val missed: Int,
-    @ColumnInfo(name = "fouled") val fouled: Int,
-    @ColumnInfo(name = "rate") val rate: String,
-    @ColumnInfo(name = "date") val date: String
+    @ColumnInfo(name = "name") var name: String,
+    @ColumnInfo(name = "potted") var potted: Int,
+    @ColumnInfo(name = "missed") var missed: Int,
+    @ColumnInfo(name = "fouled") var fouled: Int,
+    @ColumnInfo(name = "rate") var rate: String,
+    @ColumnInfo(name = "date") var date: String
 ) {
     fun getTotal(): Int {
         return potted + missed + fouled
+    }
+
+    override fun hashCode(): Int {
+        return id // the primary key in the database
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null || javaClass != other.javaClass) return false
+        val record = other as PlayerRecordItem
+        return id == record.id && name == record.name && potted == record.potted &&
+                missed == record.missed && fouled == record.fouled && rate == record.rate &&
+                date == record.date
     }
 }

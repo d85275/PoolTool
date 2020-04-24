@@ -1,5 +1,6 @@
 package com.e.pooltool
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -7,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.e.pooltool.database.PlayerRecordItem
 import kotlinx.android.synthetic.main.player_name.view.*
 
 class DialogHelper(private val context: Context?, private val viewModel: MyViewModel) {
@@ -58,6 +61,17 @@ class DialogHelper(private val context: Context?, private val viewModel: MyViewM
         showDialog(title, msg, posListener, negListener)
     }
 
+    fun updateRecord(recordItem: PlayerRecordItem) {
+        val title = recordItem.name
+        val msg = context!!.getString(R.string.update_record)
+        val posListener =
+            DialogInterface.OnClickListener { _, _ ->
+                viewModel.updateRecord(recordItem)
+            }
+        val negListener = DialogInterface.OnClickListener { _, _ -> }
+        showDialog(title, msg, posListener, negListener)
+    }
+
     fun savePlayer(position: Int, adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
 
         val title = viewModel.getPlayerName(position)
@@ -71,7 +85,8 @@ class DialogHelper(private val context: Context?, private val viewModel: MyViewM
 
         val title = viewModel.getSavedPlayerName(position)
         val msg = context!!.getString(R.string.delete)
-        val posListener = DialogInterface.OnClickListener { _, _ -> viewModel.removeSavedPlayer(position) }
+        val posListener =
+            DialogInterface.OnClickListener { _, _ -> viewModel.removeSavedPlayer(position) }
         val negListener = DialogInterface.OnClickListener { _, _ -> adapter.notifyDataSetChanged() }
         showDialog(title, msg, posListener, negListener)
     }

@@ -319,6 +319,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
                 )
             }
                 .subscribe { list ->
+                    Log.e("tag", "get list, size: ${list.size}")
                     _displayedRecord.postValue(list as ArrayList<PlayerRecordItem>?)
                 }
         )
@@ -332,13 +333,22 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
             .subscribe()
     }
 
+    fun updateRecord(recordItem: PlayerRecordItem) {
+        Single.fromCallable { repository.updateRecord(recordItem) }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                Log.e("tag", "get display list for name: ${getDisplayedRecordsList()[0].name}")
+                getDisplayedRecords(getDisplayedRecordsList()[0].name)
+            }.subscribe()
+    }
+
     private lateinit var recordItem: PlayerRecordItem
 
     fun onRecordClicked(i: Int) {
         recordItem = getDisplayedRecordsList()[i]
     }
 
-    fun getEdittingRecord(): PlayerRecordItem {
+    fun getEditingRecord(): PlayerRecordItem {
         return recordItem
     }
 

@@ -1,9 +1,6 @@
 package com.e.pooltool.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import io.reactivex.Single
 
 @Dao
@@ -26,5 +23,8 @@ interface PlayerRecordDao {
 
     @Delete
     fun delete(player: PlayerRecordItem)
+
+    @Update
+    fun update(player: PlayerRecordItem)
 
 }
