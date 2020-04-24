@@ -17,7 +17,11 @@
         android:id="@+id/playerRecordsFragment"
         android:name="com.e.pooltool.fragments.PlayerRecordsFragment"
         android:label="fragment_player_records"
-        tools:layout="@layout/fragment_player_records" />
+        tools:layout="@layout/fragment_player_records" >
+        <action
+            android:id="@+id/action_playerRecordsFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
     <fragment
         android:id="@+id/savedPlayerFragment"
         android:name="com.e.pooltool.fragments.SavedPlayerFragment"
@@ -27,4 +31,8 @@
             android:id="@+id/action_savedPlayerFragment_to_playerRecordsFragment"
             app:destination="@id/playerRecordsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.e.pooltool.fragments.EditFragment"
+        android:label="EditFragment" />
 </navigation>

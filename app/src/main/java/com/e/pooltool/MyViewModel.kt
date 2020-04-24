@@ -332,6 +332,15 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
             .subscribe()
     }
 
+    private lateinit var recordItem: PlayerRecordItem
+
+    fun onRecordClicked(i: Int) {
+        recordItem = getDisplayedRecordsList()[i]
+    }
+
+    fun getEdittingRecord(): PlayerRecordItem {
+        return recordItem
+    }
 
     fun onSavedPlayerClicked(i: Int) {
         val name = getSavedPlayerList()[i].name

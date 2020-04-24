@@ -23,7 +23,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.android.synthetic.main.fragment_player_records.*
 import java.lang.Exception
 
-class PlayerRecordsFragment : Fragment() {
+class PlayerRecordsFragment : Fragment(), IClickedCallback {
 
     private lateinit var viewModel: MyViewModel
     private lateinit var playerRecordAdapter: PlayerRecordAdapter
@@ -64,7 +64,8 @@ class PlayerRecordsFragment : Fragment() {
             PlayerRecordAdapter(
                 viewModel,
                 viewModel.getDisplayedRecordsList(),
-                context
+                context,
+                this
             )
         // use this setting to improve performance because we do not intent
         // to change the layout size of the RecyclerView
@@ -164,5 +165,10 @@ class PlayerRecordsFragment : Fragment() {
         //lineChart.setDrawGridBackground()
         lineChart.xAxis.labelCount = viewModel.getLabelCount()
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+    }
+
+    override fun itemClicked(position: Int) {
+        viewModel.onRecordClicked(position)
+        navController.navigate(R.id.action_playerRecordsFragment_to_editFragment)
     }
 }

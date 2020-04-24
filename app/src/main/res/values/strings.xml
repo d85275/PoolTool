@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">PoolTool</string>
     <string name="player_name">Name</string>
-    <string name="potted">P</string>
-    <string name="missed">M</string>
-    <string name="fouled">F</string>
+    <string name="potted_s">P</string>
+    <string name="potted">Potted</string>
+    <string name="missed_s">M</string>
+    <string name="missed">Missed</string>
+    <string name="fouled_s">F</string>
+    <string name="fouled">Fouled</string>
+    <string name="date">Date</string>
     <string name="rate">Rate</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>

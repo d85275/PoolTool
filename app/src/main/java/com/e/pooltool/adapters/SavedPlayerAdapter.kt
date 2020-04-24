@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.e.pooltool.ISavedPlayerCallback
+import com.e.pooltool.IClickedCallback
 import com.e.pooltool.MyViewModel
 import com.e.pooltool.Player
 import com.e.pooltool.R
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_saved_player.view.*
 class SavedPlayerAdapter(
     private val viewModel: MyViewModel,
     private var list: ArrayList<Player>,
-    private var callback: ISavedPlayerCallback,
+    private var callback: IClickedCallback,
     private val ctx: Context?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -32,7 +32,7 @@ class SavedPlayerAdapter(
         val rate = list[position].getRate()
         val data = ctx!!.getString(R.string.rate_and_ratio, rate, potted, list[position].getTotal())
         holder.itemView.tvRatio.text = data
-        holder.itemView.setOnClickListener { callback.savedPlayerClicked(position) }
+        holder.itemView.setOnClickListener { callback.itemClicked(position) }
     }
 
     fun setData(list: ArrayList<Player>) {

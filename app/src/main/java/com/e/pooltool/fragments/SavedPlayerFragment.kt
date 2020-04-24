@@ -17,7 +17,7 @@ import com.e.pooltool.adapters.SavedPlayerAdapter
 import kotlinx.android.synthetic.main.fragment_saved_player.*
 import java.lang.Exception
 
-class SavedPlayerFragment : Fragment(), ISavedPlayerCallback {
+class SavedPlayerFragment : Fragment(), IClickedCallback {
 
     private lateinit var navController: NavController
     private lateinit var viewModel: MyViewModel
@@ -94,7 +94,7 @@ class SavedPlayerFragment : Fragment(), ISavedPlayerCallback {
         viewModel.getAllSavedPlayers()
     }
 
-    override fun savedPlayerClicked(position: Int) {
+    override fun itemClicked(position: Int) {
         viewModel.onSavedPlayerClicked(position)
         navController.navigate(R.id.action_savedPlayerFragment_to_playerRecordsFragment)
     }
