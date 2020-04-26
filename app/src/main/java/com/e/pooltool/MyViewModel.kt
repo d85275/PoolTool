@@ -297,7 +297,33 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         return Player(name, potted, missed, fouled)
     }
 
-    fun getRate(num: Int, total: Int): String {
+    fun getDisplayedName(): String {
+        return getDisplayedData().name
+    }
+
+    fun getDisplayedPotted(): String {
+        return getDisplayedValue(getDisplayedData().potted)
+    }
+
+    fun getDisplayedMissed(): String {
+        return getDisplayedValue(getDisplayedData().missed)
+    }
+
+    fun getDisplayedFouled(): String {
+        return getDisplayedValue(getDisplayedData().fouled)
+    }
+
+    fun getDisplayedRate(): String {
+        return getDisplayedData().getRate().replace("%", "")
+    }
+
+    private fun getDisplayedValue(num: Int): String {
+        val player = getDisplayedData()
+        val total = player.potted + player.missed + player.fouled
+        return getRate(num, total)
+    }
+
+    private fun getRate(num: Int, total: Int): String {
         if (num == 0) {
             return "0/$total  (0%)"
         }
