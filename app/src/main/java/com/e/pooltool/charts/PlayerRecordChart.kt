@@ -42,10 +42,24 @@ class PlayerRecordChart(private val viewModel: MyViewModel, private val lineChar
         lineChart.description.isEnabled = false
         lineChart.legend.isEnabled = false
         lineChart.setPinchZoom(true)
-        lineChart.xAxis.enableGridDashedLine(5f, 5f, 0f)
+
+        setX()
+        setY()
+    }
+
+    private fun setX() {
+        lineChart.axisLeft.isEnabled = false
         lineChart.axisRight.enableGridDashedLine(5f, 5f, 0f)
-        lineChart.axisLeft.enableGridDashedLine(5f, 5f, 0f)
-        //lineChart.setDrawGridBackground()
+        //lineChart.axisLeft.enableGridDashedLine(5f, 5f, 0f)
+        lineChart.axisRight.valueFormatter = PercentValueFormatter()
+        //lineChart.axisLeft.valueFormatter = PercentValueFormatter()
+        lineChart.axisRight.textColor = Color.GRAY
+        //lineChart.axisLeft.textColor = Color.GRAY
+
+    }
+
+    private fun setY() {
+        lineChart.xAxis.enableGridDashedLine(5f, 5f, 0f)
         lineChart.xAxis.labelCount = viewModel.getLabelCount()
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         lineChart.xAxis.valueFormatter = DateValueFormatter(viewModel.getDisplayedRecordsList())
@@ -53,7 +67,6 @@ class PlayerRecordChart(private val viewModel: MyViewModel, private val lineChar
         lineChart.xAxis.textSize = 10f
         lineChart.xAxis.textColor = Color.GRAY
     }
-
 
     private fun getCharData(): ArrayList<Entry> {
         val data = ArrayList<Entry>()
