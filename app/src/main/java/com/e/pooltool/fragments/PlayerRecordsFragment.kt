@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.e.pooltool.*
 import com.e.pooltool.adapters.PlayerRecordAdapter
+import com.e.pooltool.charts.DateValueFormatter
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -166,6 +167,10 @@ class PlayerRecordsFragment : Fragment(), IClickedCallback {
         //lineChart.setDrawGridBackground()
         lineChart.xAxis.labelCount = viewModel.getLabelCount()
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        lineChart.xAxis.valueFormatter = DateValueFormatter(viewModel.getDisplayedRecordsList())
+        lineChart.xAxis.labelRotationAngle = -45f
+        lineChart.xAxis.textSize = 10f
+        lineChart.xAxis.textColor = Color.parseColor("#ababab")
     }
 
     override fun itemClicked(position: Int) {
