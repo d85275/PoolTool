@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.e.pooltool.*
 import com.e.pooltool.adapters.PlayerRecordAdapter
+import com.e.pooltool.charts.DataMarker
 import com.e.pooltool.charts.PlayerRecordChart
+import com.github.mikephil.charting.components.IMarker
 import kotlinx.android.synthetic.main.fragment_player_records.*
 import java.lang.Exception
 
@@ -52,6 +54,8 @@ class PlayerRecordsFragment : Fragment(), IClickedCallback {
 
     private fun initChart() {
         playerRecoradChart = PlayerRecordChart(viewModel, lineChart)
+        val marker: IMarker = DataMarker(context!!, R.layout.chart_marker)
+        lineChart.marker = marker
     }
 
     private fun getDialogHelper() {

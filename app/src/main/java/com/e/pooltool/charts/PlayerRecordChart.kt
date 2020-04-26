@@ -48,13 +48,13 @@ class PlayerRecordChart(private val viewModel: MyViewModel, private val lineChar
     }
 
     private fun setX() {
-        lineChart.axisLeft.isEnabled = false
+        //lineChart.axisLeft.isEnabled = false
         lineChart.axisRight.enableGridDashedLine(5f, 5f, 0f)
-        //lineChart.axisLeft.enableGridDashedLine(5f, 5f, 0f)
+        lineChart.axisLeft.enableGridDashedLine(5f, 5f, 0f)
         lineChart.axisRight.valueFormatter = PercentValueFormatter()
-        //lineChart.axisLeft.valueFormatter = PercentValueFormatter()
+        lineChart.axisLeft.valueFormatter = PercentValueFormatter()
         lineChart.axisRight.textColor = Color.GRAY
-        //lineChart.axisLeft.textColor = Color.GRAY
+        lineChart.axisLeft.textColor = Color.GRAY
 
     }
 
