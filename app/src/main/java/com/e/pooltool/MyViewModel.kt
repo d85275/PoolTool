@@ -368,9 +368,16 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
 
     // -- editing fragment
     private val _editingRecord = MutableLiveData<PlayerRecordItem>()
+    private lateinit var savedEditingRecord: PlayerRecordItem
+
+    fun isRecordChanged(): Boolean {
+        return savedEditingRecord != getEditingRecord()
+    }
 
     fun onRecordClicked(i: Int) {
-        _editingRecord.postValue(getDisplayedRecordsList()[i])
+        val record = getDisplayedRecordsList()[i].copy()
+        savedEditingRecord = getDisplayedRecordsList()[i]
+        _editingRecord.postValue(record)
     }
 
     fun getEditingRecordLiveData(): LiveData<PlayerRecordItem> {

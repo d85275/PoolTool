@@ -44,4 +44,16 @@ class PlayerRecordItem(
                 missed == record.missed && fouled == record.fouled && rate == record.rate &&
                 date == record.date
     }
+
+    fun copy(): PlayerRecordItem {
+        return PlayerRecordItem(
+            this.id,
+            this.name,
+            this.potted,
+            this.missed,
+            this.fouled,
+            this.rate,
+            this.date
+        )
+    }
 }

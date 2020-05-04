@@ -69,6 +69,9 @@ class EditFragment : Fragment() {
         btRemoveFouled.setOnClickListener { viewModel.removeFouled() }
 
         btConfirm.setOnClickListener {
+            // do nothing if the record is not changed
+            if (!viewModel.isRecordChanged()) return@setOnClickListener
+
             dialogHelper.updateRecord(viewModel.getEditingRecord())
             updated = true
         }
