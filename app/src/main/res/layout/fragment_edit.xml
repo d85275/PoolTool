@@ -13,10 +13,9 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
             android:text="@string/player_name" />
 
         <EditText
@@ -30,63 +29,106 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
             android:text="@string/potted" />
+
+        <ImageButton
+            android:id="@+id/btRemovePotted"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_remove_24dp" />
 
         <TextView
             android:id="@+id/tvPotted"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5" />
+            android:gravity="center"
+            android:maxLines="1" />
+
+        <ImageButton
+            android:id="@+id/btAddPotted"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_add_24dp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
             android:text="@string/missed" />
+
+        <ImageButton
+            android:id="@+id/btRemoveMissed"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_remove_24dp" />
 
         <TextView
             android:id="@+id/tvMissed"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5" />
+            android:gravity="center"
+            android:maxLines="1" />
+
+        <ImageButton
+            android:id="@+id/btAddMissed"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_add_24dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
             android:text="@string/fouled" />
+
+        <ImageButton
+            android:id="@+id/btRemoveFouled"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_remove_24dp" />
 
         <TextView
             android:id="@+id/tvFouled"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5" />
+            android:gravity="center"
+            android:maxLines="1" />
+
+        <ImageButton
+            android:id="@+id/btAddFouled"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_add_24dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -97,10 +139,9 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
             android:text="@string/rate" />
 
         <TextView
@@ -118,10 +159,9 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_weight="0.5"
             android:text="@string/date" />
 
         <TextView

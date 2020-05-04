@@ -345,7 +345,6 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
                 )
             }
                 .subscribe { list ->
-                    Log.e("tag", "get list, size: ${list.size}")
                     _displayedRecord.postValue(list as ArrayList<PlayerRecordItem>?)
                 }
         )
@@ -363,20 +362,74 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
         Single.fromCallable { repository.updateRecord(recordItem) }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
-                Log.e("tag", "get display list for name: ${getDisplayedRecordsList()[0].name}")
                 getDisplayedRecords(getDisplayedRecordsList()[0].name)
             }.subscribe()
     }
 
-    private lateinit var recordItem: PlayerRecordItem
+    // -- editing fragment
+    private val _editingRecord = MutableLiveData<PlayerRecordItem>()
 
     fun onRecordClicked(i: Int) {
-        recordItem = getDisplayedRecordsList()[i]
+        _editingRecord.postValue(getDisplayedRecordsList()[i])
+    }
+
+    fun getEditingRecordLiveData(): LiveData<PlayerRecordItem> {
+        return _editingRecord
     }
 
     fun getEditingRecord(): PlayerRecordItem {
-        return recordItem
+        return _editingRecord.value!!
     }
+
+    fun addPotted() {
+        val record = getEditingRecord()
+        record.potted += 1
+        record.updateRate()
+        _editingRecord.postValue(record)
+    }
+
+    fun removePotted() {
+        val record = getEditingRecord()
+        if (record.potted > 0) {
+            record.potted -= 1
+            record.updateRate()
+            _editingRecord.postValue(record)
+        }
+    }
+
+    fun addMissed() {
+        val record = getEditingRecord()
+        record.missed += 1
+        record.updateRate()
+        _editingRecord.postValue(record)
+    }
+
+    fun removeMissed() {
+        val record = getEditingRecord()
+        if (record.missed > 0) {
+            record.missed -= 1
+            record.updateRate()
+            _editingRecord.postValue(record)
+        }
+    }
+
+    fun addFouled() {
+        val record = getEditingRecord()
+        record.fouled += 1
+        record.updateRate()
+        _editingRecord.postValue(record)
+    }
+
+    fun removeFouled() {
+        val record = getEditingRecord()
+        if (record.fouled > 0) {
+            record.fouled -= 1
+            record.updateRate()
+            _editingRecord.postValue(record)
+        }
+    }
+
+    // --
 
     fun onSavedPlayerClicked(i: Int) {
         val name = getSavedPlayerList()[i].name

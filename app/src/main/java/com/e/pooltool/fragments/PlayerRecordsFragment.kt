@@ -26,7 +26,7 @@ class PlayerRecordsFragment : Fragment(), IClickedCallback {
     private lateinit var playerRecordAdapter: PlayerRecordAdapter
     private lateinit var navController: NavController  // we'll initialise it later
     private lateinit var dialogHelper: DialogHelper
-    private lateinit var playerRecoradChart: PlayerRecordChart
+    private lateinit var playerRecordChart: PlayerRecordChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +53,7 @@ class PlayerRecordsFragment : Fragment(), IClickedCallback {
     }
 
     private fun initChart() {
-        playerRecoradChart = PlayerRecordChart(viewModel, lineChart)
+        playerRecordChart = PlayerRecordChart(viewModel, lineChart)
         val marker: IMarker = DataMarker(context!!, R.layout.chart_marker)
         lineChart.marker = marker
     }
@@ -81,7 +81,7 @@ class PlayerRecordsFragment : Fragment(), IClickedCallback {
     private fun registerLiveData() {
         viewModel.getDisplayedRecordLiveDate().observe(this, Observer { list ->
             initData()
-            playerRecoradChart.setup()
+            playerRecordChart.setup()
             playerRecordAdapter.setData(list)
             playerRecordAdapter.notifyDataSetChanged()
         })

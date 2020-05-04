@@ -1,8 +1,11 @@
 package com.e.pooltool.database
 
+import android.util.Log
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 @Entity
@@ -21,6 +24,17 @@ class PlayerRecordItem(
 
     override fun hashCode(): Int {
         return id // the primary key in the database
+    }
+
+    fun updateRate() {
+        if (potted == 0) {
+            rate = "0 %"
+            return
+        }
+        val num = (potted.toDouble() / (potted + missed + fouled)) * 100
+        val df = DecimalFormat("#.#")
+        df.roundingMode = RoundingMode.CEILING
+        rate = "${df.format(num)} %"
     }
 
     override fun equals(other: Any?): Boolean {

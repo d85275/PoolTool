@@ -37,7 +37,6 @@ class EditFragment : Fragment() {
         getViewModel()
         getDialogHelper()
         navController = findNavController()
-        initData()
         setListeners()
         registerLiveData()
     }
@@ -51,46 +50,41 @@ class EditFragment : Fragment() {
         dialogHelper = DialogHelper(context, viewModel)
     }
 
-    private fun initData() {
-        val record = viewModel.getEditingRecord()
+    private fun initData(record: PlayerRecordItem) {
         etName.setText(record.name)
         tvPotted.text = record.potted.toString()
         tvFouled.text = record.fouled.toString()
         tvMissed.text = record.missed.toString()
         tvRate.text = record.rate
         tvDate.text = record.date
+        viewModel.setTextColor(record.rate, tvRate)
     }
 
     private fun setListeners() {
+        btAddPotted.setOnClickListener { viewModel.addPotted() }
+        btRemovePotted.setOnClickListener { viewModel.removePotted() }
+        btAddMissed.setOnClickListener { viewModel.addMissed() }
+        btRemoveMissed.setOnClickListener { viewModel.removeMissed() }
+        btAddFouled.setOnClickListener { viewModel.addFouled() }
+        btRemoveFouled.setOnClickListener { viewModel.removeFouled() }
+
         btConfirm.setOnClickListener {
-            val current = getCurrentRecord()
-            if (current != viewModel.getEditingRecord()) {
-                dialogHelper.updateRecord(current)
-                updated = true
-            }
+            dialogHelper.updateRecord(viewModel.getEditingRecord())
+            updated = true
         }
     }
 
-    private fun getCurrentRecord(): PlayerRecordItem {
-        return PlayerRecordItem(
-            viewModel.getEditingRecord().id,
-            etName.text.toString(),
-            tvPotted.text.toString().toInt(),
-            tvMissed.text.toString().toInt(),
-            tvFouled.text.toString().toInt(),
-            tvRate.text.toString(),
-            tvDate.text.toString()
-        )
-    }
 
     private fun registerLiveData() {
+        viewModel.getEditingRecordLiveData().observe(this, Observer { record -> initData(record) })
+
+
         viewModel.getDisplayedRecordLiveDate().observe(this, Observer { list ->
             // do nothing if the data haven't been updated
             if (updated) {
-                //Log.e("edit fragment", "size: ${list.size}")
                 // there is no data left for the displayed player, go back to saved player fragment
                 if (list.size <= 0) {
-                    navController.popBackStack(R.id.savedPlayerFragment,false)
+                    navController.popBackStack(R.id.savedPlayerFragment, false)
                 } else {
                     // go back to player record fragment
                     activity!!.onBackPressed()
