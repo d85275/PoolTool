@@ -334,6 +334,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     }
 
     private fun getDisplayedRecords(name: String) {
+        _displayedRecord = MutableLiveData()
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
             repository.getRecords(name).subscribeOn(Schedulers.io()).observeOn(
@@ -441,6 +442,7 @@ class MyViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() 
     fun onSavedPlayerClicked(i: Int) {
         val name = getSavedPlayerList()[i].name
         getDisplayedRecords(name)
+        Log.e("vm", "name: $name")
     }
 
 
